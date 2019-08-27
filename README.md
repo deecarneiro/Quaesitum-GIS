@@ -21,10 +21,7 @@ Nichos da população que buscam por informação e ao mesmo tempo pessoas que e
 * Visual Studio Code
 
 ## Contribuidores
-- [@deecarneiro](https://github.com/deecarneiro) como Deyse Carneiro (Desenvolvedora, Arquiteta)
+- [@deecarneiro](https://github.com/deecarneiro) como Deyse Dayane de Oliveira Carneiro (Desenvolvedora, Arquiteta)
 - [@jvvoliveira](https://github.com/jvvoliveira) como João Victor Vasconcelos Corrêa de Oliveira (Desenvolvedor)
-- [@evellinne](https://github.com/evellinne) como Evelline (Desenvolvedora)
-- [@orientadora](https://github.com/orientadora) como Sicrano da Silva (Orientador)
-
-## Licença
-Caso sinta necessidade defina uma licença para o seu aplicativo/sistema/solução.
+- [@evellinne](https://github.com/evellinne) como Evellinne Maria Ramos da Silva (Desenvolvedora)
+- [@orientadora](https://github.com/aida) como Aida Araújo Ferreira (Orientador)
