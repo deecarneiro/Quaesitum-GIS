@@ -24,4 +24,4 @@ Nichos da população que buscam por informação e ao mesmo tempo pessoas que e
 - [@deecarneiro](https://github.com/deecarneiro) como Deyse Dayane de Oliveira Carneiro (Desenvolvedora, Arquiteta)
 - [@jvvoliveira](https://github.com/jvvoliveira) como João Victor Vasconcelos Corrêa de Oliveira (Desenvolvedor)
 - [@evellinne](https://github.com/evellinne) como Evellinne Maria Ramos da Silva (Desenvolvedora)
-- [@orientadora](https://github.com/aida) como Aida Araújo Ferreira (Orientador)
+- [@aidaferreira](https://github.com/aidaferreira) como Aida Araújo Ferreira (Orientador)
