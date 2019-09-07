@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
+import styles from "./App.module.scss";
 import Header from './Components/Header/Header';
+import { BrowserRouter } from "react-router-dom";
+import Router from './Components/Router';
 
 class App extends Component {
   state = {
@@ -10,8 +12,13 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <Header/>
+      <div className={styles.app}>
+        <BrowserRouter>
+          <Header />
+          <div className={styles.body}>
+            <Router />
+          </div>
+        </BrowserRouter>
       </div>
     );
   }

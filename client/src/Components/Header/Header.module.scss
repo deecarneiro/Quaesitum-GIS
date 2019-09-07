@@ -1,1 +1,32 @@
 @import "../../css/variables.scss";
+
+.nav{
+    padding: 0;
+}
+
+.bodyHeader{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 60px;
+    background-color: $color-white;
+    .leftHeader{
+        display: flex;
+        flex-direction: row;
+        margin-left: 10px;
+    }
+    .rightHeader{
+        margin-right: 10px;
+        .btnArea{
+            min-width: 120px;
+        }
+    }
+    .option{
+        &:hover,
+        &:active{
+            background-color: $color-gray-light;
+        }
+    }
+}

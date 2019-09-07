@@ -1,0 +1,30 @@
+@import "../../css/variables.scss";
+
+.content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    .cardBody{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: $color-white;
+        box-shadow: 3px 3px 10px rgba(100, 100, 100, 0.3);
+        max-width: 500px;
+        padding: 80px;
+        .title{
+            text-align: center;
+        }
+        .description{
+            color: $color-gray;
+            text-align: center;
+        }
+        .formField{
+            margin: 15px 0;
+            input{
+                color: $color-gray;
+            }
+        }
+    }
+}
