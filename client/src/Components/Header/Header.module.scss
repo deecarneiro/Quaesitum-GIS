@@ -1,32 +1,45 @@
 @import "../../css/variables.scss";
 
-.nav{
-    padding: 0;
+.nav {
+  padding: 0;
 }
 
-.bodyHeader{
-    width: 100%;
+.bodyHeader {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 60px;
+  background-color: $color-white;
+  .leftHeader {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     align-items: center;
-    min-height: 60px;
-    background-color: $color-white;
-    .leftHeader{
-        display: flex;
-        flex-direction: row;
-        margin-left: 10px;
+    flex-direction: row;
+    margin-left: 20px;
+    display: flex;
+    a {
+      display: flex;
+      align-items: center;
+      img {
+        max-width: 40px;
+        max-height: 40px;
+        margin-right: 15px;
+      }
     }
-    .rightHeader{
-        margin-right: 10px;
-        .btnArea{
-            min-width: 120px;
-        }
+  }
+  .rightHeader {
+    margin-right: 20px;
+    .btnArea {
+      min-width: 120px;
     }
-    .option{
-        &:hover,
-        &:active{
-            background-color: $color-gray-light;
-        }
+  }
+  .option {
+    &:hover,
+    &:active,
+    &:focus,
+    &:visited {
+      background-color: $color-gray-light;
     }
+  }
 }
