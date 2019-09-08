@@ -8,13 +8,13 @@ const Header = () => {
         <nav className={`${styles.nav} navbar navbar-expand-lg navbar-light`}>
             <div className={styles.bodyHeader}>
                 <div className={styles.leftHeader}>
-                    <a className="navbar-brand" href="#"> <img src="#" />Quaesitum GIS</a>
+                    <a className="navbar-brand" href="/#"> <img src="C:\Users\Deyse\Desktop\Quaesitum-GIS\client\src\assets\map-icon.png" alt="Quaesitum-GIS" />Quaesitum GIS</a>
                     <ul className="navbar-nav mr-auto">
                         <li className={`nav-item active ${styles.option}`}>
-                            <a className="nav-link" href="#">Cadastro</a>
+                            <a className="nav-link" href="/#">Cadastro</a>
                         </li>
                         <li className={`nav-item active ${styles.option}`}>
-                            <a className="nav-link" href="#">Sobre</a>
+                            <a className="nav-link" href="/#">Sobre</a>
                         </li>
                     </ul>
                 </div>
