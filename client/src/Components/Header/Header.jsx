@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./Header.module.scss";
 import Button from "../Button/Button";
 import { Link } from "react-router-dom";
-import iconMap from "../../assets/map-icon.png";
+import iconMap from "../../assets/images/map-icon.png";
 
 const Header = () => {
     return (
