@@ -1,16 +1,15 @@
 const axios = require('axios');
 
-const API = "http://localhost:5000/"; 
+const API = "http://localhost:5000/user"; 
 
 const user = {
     saveUser: (name, email, password) => {
         const url = API;
-        let data = {
+        const data = {
             name: name,
             email: email,
             password: password
         }
-        data = JSON.stringify(data);
         return axios.post(url, data);
     },
     loadUser: (id) => {
