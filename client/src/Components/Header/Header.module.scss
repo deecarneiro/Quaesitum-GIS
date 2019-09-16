@@ -32,6 +32,14 @@
     margin-right: 20px;
     .btnArea {
       min-width: 120px;
+      .icon{
+        max-width: 40px;
+        max-height: 40px;
+        float: right;
+        &:hover{
+          cursor: pointer;
+        }
+      }
     }
   }
   .option {
