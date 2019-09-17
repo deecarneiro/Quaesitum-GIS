@@ -24,15 +24,19 @@ exports.getById = (req, res, next) => {
 }
 
 exports.post = (req, res, next) => {
+    console.log("AAAAAA");
+    console.log(req.body);
     var user = new User(req.body);
     user.save() //Saving user in database
-        .then(x => {
+        .then(e => {
+            console.log(e);
             res.status(201).send({
                 message: 'Usuário cadastrado com sucesso'
             });
         }).catch(e => {
+            console.log(e);
                 res.status(400).send({
-                    message: 'Usuário cadastrado com sucesso',
+                    message: 'Falha ao cadastrar usuário',
                     data: e
                 })
         });
