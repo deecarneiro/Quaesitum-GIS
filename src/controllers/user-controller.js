@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const ValidatorContract = require('../validators/fluent-validator');
 
 exports.get = (req, res, next) => {
     User
@@ -24,8 +25,15 @@ exports.getById = (req, res, next) => {
 }
 
 exports.post = (req, res, next) => {
-    console.log("AAAAAA");
-    console.log(req.body);
+    let contract = new ValidatorContract();
+    contract.hasMinLen(req.body.name, 5, 'O nome deve ter pelo menos 5 caracteres ou mais');
+    contract.isEmail(req.body.email, 'Deve ser informado um email válido');
+    contract.isPassword(req.body.password, 'Uma senha deve ter pelo oito caracteres a doze caracteres, com pelo menos uma letra minúscula, uma letra maiúscula, um caracter numérico e um especial.')
+    
+    if (!contract.isValid()){
+        res.status(400).send(contract.erros()).end();
+        return;
+    }
     var user = new User(req.body);
     user.save() //Saving user in database
         .then(e => {
