@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "scripts": {
         "client": "cd client && npm start server",
-        "server": "node ./bin/server.js",
+        "server": "nodemon ./bin/server.js",
         "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
     },
     "dependencies": {
@@ -13,6 +13,7 @@
         "debug": "^4.1.1",
         "express": "^4.17.1",
         "http": "0.0.0",
+        "md5": "^2.2.1",
         "mongoose": "^5.6.13"
     },
     "devDependencies": {

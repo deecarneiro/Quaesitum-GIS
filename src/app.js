@@ -11,9 +11,7 @@ app.use(cors());
 const router = express.Router();
 
 //Connecting database
-mongoose.connect(config.connectionString, {
-  useNewUrlParser: true
-}, { useCreateIndex: true }, { useFindAndModify: false });
+mongoose.connect(config.connectionString, { useNewUrlParser: true , useCreateIndex: true});
 
 //Importing models
 const User = require("./models/user");
