@@ -34,3 +34,11 @@ exports.delete = async(id) => {
     await User
     .findByIdAndDelete(({ _id: id }));
 }
+
+exports.authenticate = async(data) => {
+    const res = await User.findOne({
+        email: data.email,
+        password: data.password
+    })
+    return res;
+}

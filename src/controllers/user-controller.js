@@ -3,7 +3,7 @@
 const ValidatorContract = require('../validators/fluent-validator');
 const repository = require('../repositories/user-repository');
 const md5 = require('md5');
-
+const authService = require('../services/auth-service');
 exports.get = async(req, res, next) => {
     try{
     var data = await repository.get()
@@ -43,15 +43,17 @@ exports.post = async(req, res, next) => {
             name : req.body.name,
             email : req.body.email,
             password : md5(req.body.password+global.SALT_KEY)
-        })
-        res.status(201).send({
-            message: 'Usuário atualizado com sucesso'
-    });
-    }catch (e){
-        res.status(500).send({
-            message: 'Falha ao processar sua requisição'
         });
-    };
+        
+        // mailService.send(req.body.email, 'Bem vindo ao Quaesitum', global.EMAIL_TEMPL.replace('{0}', req.body.name));
+        res.status(200).send({
+            message: 'Usuário atualizado com sucesso'
+        });
+        }catch (e){
+            res.status(500).send({
+                message: 'Falha ao processar sua requisição'
+            });
+        };
 };
 
 exports.put = async(req, res, next) => {
@@ -80,4 +82,42 @@ exports.delete = async(req, res, next) => {
     });
 };
     
+};
+
+exports.authenticate = async(req, res, next) => {
+    let contract = new ValidatorContract();
+    contract.isEmail(req.body.email, 'Deve ser informado um email válido');
+    contract.isPassword(req.body.password, 'Uma senha deve ter pelo oito caracteres a doze caracteres, com pelo menos uma letra minúscula, uma letra maiúscula, um caracter numérico e um especial.')
+    
+    if (!contract.isValid()){
+        res.status(400).send(contract.erros()).end();
+        return;
+    }
+   try{
+        const user = await repository.authenticate({
+            email : req.body.email,
+            password : md5(req.body.password+global.SALT_KEY)
+        });
+        if(!user){
+            res.status(400).send({
+                message : "Usuário ou senha inválidos"
+            });
+            return;
+        }
+        const token = await authService.generateToken(
+            {email: user.email, 
+            name: user.name
+        })
+        res.status(201).send({
+            token : token,
+            data:{
+                email: user.email,
+                name: user.name
+            }
+        });
+        }catch (e){
+        res.status(500).send({
+            message: 'Falha ao processar sua requisição'
+        });
+    };
 };
