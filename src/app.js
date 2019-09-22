@@ -12,7 +12,7 @@ const router = express.Router();
 //Connecting database
 mongoose.connect("mongodb+srv://root:root@cluster0-6xeoe.mongodb.net/test", {
   useNewUrlParser: true
-});
+}, { useCreateIndex: true }, { useFindAndModify: false });
 
 //Importing models
 const User = require("./models/user");
