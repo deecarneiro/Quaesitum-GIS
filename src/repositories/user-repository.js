@@ -2,23 +2,25 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 
-exports.get = () => {
-    return  User
+exports.get = async() => {
+    const res = await User
     .find({});
+    return res;
 }
 
-exports.getById = (id) => {
-    return User
+exports.getById = async(id) => {
+    const res = await User
     .findById(id)
+    return res;
 }
 
-exports.create = (data) => {
+exports.create = async(data) => {
     var user = new User(data);
-    return user.save()
+    await user.save()
 }
 
-exports.update = (id, data) =>{
-    return User
+exports.update = async(id, data) =>{
+    await User
     .findByIdAndUpdate(id, {
         $set: { 
             name: data.name,
@@ -28,7 +30,7 @@ exports.update = (id, data) =>{
     })
 }
 
-exports.delete = (id) => {
-    return User
-    .findByIdAndDelete(id);
+exports.delete = async(id) => {
+    await User
+    .findByIdAndDelete(({ _id: id }));
 }

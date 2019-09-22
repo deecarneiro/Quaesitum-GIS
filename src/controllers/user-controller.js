@@ -1,31 +1,32 @@
 'use strict';
 
-const mongoose = require('mongoose');
-const User = mongoose.model('User');
 const ValidatorContract = require('../validators/fluent-validator');
 const repository = require('../repositories/user-repository')
 
-exports.get = (req, res, next) => {
-    repository
-    .get()
-    .then(data => {
-        res.status(200).send(data);
-    }).catch(e => {
-        res.status(400).send(e);
-    });
+exports.get = async(req, res, next) => {
+    try{
+    var data = await repository.get()
+    res.status(200).send(data);
+    } catch (e){
+        res.status(500).send({
+            message: 'Falha ao processar sua requisição'
+        });
+    };
 };
 
-exports.getById = (req, res, next) => {
-    repository
-        .getById(req.params.id)
-        .then(data => {
+exports.getById = async(req, res, next) => {
+    try{
+        var data = await repository.getById(req.params.id)
             res.status(200).send(data);
-        }).catch(e => {
-            res.status(400).send(e);
-        })
+    } catch (e){
+        res.status(500).send({
+            message: 'Falha ao processar sua requisição'
+        });
+    };
+   
 }
 
-exports.post = (req, res, next) => {
+exports.post = async(req, res, next) => {
     let contract = new ValidatorContract();
     contract.hasMinLen(req.body.name, 6, 'O nome deve ter pelo menos 5 caracteres ou mais');
     contract.isEmail(req.body.email, 'Deve ser informado um email válido');
@@ -35,47 +36,42 @@ exports.post = (req, res, next) => {
         res.status(400).send(contract.erros()).end();
         return;
     }
-    repository.create(req.body)
-        .then(e => {
-            console.log(e);
-            res.status(201).send({
-                message: 'Usuário cadastrado com sucesso'
-            });
-        }).catch(e => {
-            console.log(e);
-                res.status(400).send({
-                    message: 'Falha ao cadastrar usuário',
-                    data: e
-                })
+   try{
+        await repository.create(req.body)
+        res.status(201).send({
+            message: 'Usuário atualizado com sucesso'
+    });
+    }catch (e){
+        res.status(500).send({
+            message: 'Falha ao processar sua requisição'
         });
+    };
 };
 
-exports.put = (req, res, next) => {
-    repository
-    .update(req.params.id, req.body)
-    .then( x => {
+exports.put = async(req, res, next) => {
+    await repository.update(req.params.id, req.body)
+    try{
         res.status(200).send({
             message: 'Usuário atualizado com sucesso'
-        });
-    }).catch(e => {
-        res.status(400).send({
-            message: 'Falha ao atualizar usuário',
-            data: e
-        });
     });
+    }catch (e){
+        res.status(500).send({
+            message: 'Falha ao processar sua requisição'
+        });
+    };
+    
 };
 
-exports.delete = (req, res, next) => {
-   repository
-    .delete(req.body.id)
-    .then(x => {
-        res.status(200).send({
-            message: 'Usuário removido com sucesso'
-        });
-    }).catch(e => {
-        res.status(400).send({
-            message: 'Falha ao remover produto',
-            data: e
-        });
+exports.delete = async(req, res, next) => {
+   try{
+       await repository.delete(req.params.id);
+       res.status(200).send({
+        message: 'Usuário removido com sucesso'
     });
+   }catch (e){
+    res.status(500).send({
+        message: 'Falha ao processar sua requisição'
+    });
+};
+    
 };
