@@ -3,6 +3,8 @@ import styles from "./App.module.scss";
 import Header from './Components/Header/Header';
 import { BrowserRouter } from "react-router-dom";
 import Router from './Routes/Router';
+import { initialState } from './state/initialState';
+import { setUserLogged } from './state/userActions';
 
 export const userContext = React.createContext({
   isLogged: true
@@ -12,14 +14,10 @@ class App extends Component {
   constructor(props){
     super(props);
 
-    this.state = {
-      isLogged: sessionStorage.getItem("token") ? true : false
-    };
+    this.state = initialState();
+    this.setUserLogged = setUserLogged.bind(this);
   }
 
-  setUserLogged = userIsLogged => {
-    this.setState({isLogged: userIsLogged});
-  };
 
   render() {
 
