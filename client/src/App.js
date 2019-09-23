@@ -13,7 +13,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      isLogged: false
+      isLogged: sessionStorage.getItem("token") ? true : false
     };
   }
 

@@ -12,9 +12,13 @@ const user = {
         }
         return axios.post(url, data);
     },
-    loadUser: (id) => {
-        const url = API + id;
-        return axios.get(url);
+    loadUser: (email, password) => {
+        const url = API + "/authenticate";
+        const data = {
+            email: email,
+            password: password
+        }
+        return axios.post(url, data);
     }
 }
 export default user;

@@ -12,6 +12,7 @@
 .bodyHeader {
   width: 100%;
   height: 60px;
+  padding: 0 30px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -37,12 +38,24 @@
     margin-right: 20px;
     .btnArea {
       min-width: 120px;
-      .icon{
-        max-width: 40px;
-        max-height: 40px;
-        float: right;
+      .profileOptions {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        color: $color-gray-dark;
         &:hover{
           cursor: pointer;
+        }
+        .icon {
+          max-width: 40px;
+          max-height: 40px;
+          float: right;
+          &:hover {
+            cursor: pointer;
+          }
+        }
+        p {
+          margin: 0;
         }
       }
     }
