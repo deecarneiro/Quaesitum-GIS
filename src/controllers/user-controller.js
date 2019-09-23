@@ -38,7 +38,7 @@ exports.post = async(req, res, next) => {
         return;
     }
    try{
-
+         
         await repository.create({
             name : req.body.name,
             email : req.body.email,
@@ -105,7 +105,44 @@ exports.authenticate = async(req, res, next) => {
             return;
         }
         const token = await authService.generateToken(
-            {email: user.email, 
+            {
+            _id : user.id,
+            email: user.email, 
+            name: user.name
+        })
+        res.status(201).send({
+            token : token,
+            data:{
+                email: user.email,
+                name: user.name
+            }
+        });
+        }catch (e){
+        res.status(500).send({
+            message: 'Falha ao processar sua requisição'
+        });
+    };
+};
+
+exports.refreshToken = async(req, res, next) => {
+ 
+   try{
+        const token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+        const data = await authService.decodeToken(tokenRefresh);
+
+        const user = await repository.getById(data.id);
+
+        if(!user){
+            res.status(401).send({
+                message : "Usuário não encontrado"
+            });
+            return;
+        }
+        const tokenData = await authService.generateToken(
+            {
+            _id : user.id,
+            email: user.email, 
             name: user.name
         })
         res.status(201).send({
