@@ -17,6 +17,7 @@ const Enter = (props) => {
             if (response.status === 201) {
                 console.log(response.data);
                 sessionStorage.setItem("token", response.data.token);
+                sessionStorage.setItem("name", response.data.data.name);
                 await setUserName(response.data.data.name);
                 await setUserLogged(true);
                 props.history.push("/home");
