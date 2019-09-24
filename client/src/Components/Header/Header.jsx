@@ -36,7 +36,7 @@ const Header = () => {
         </div>)
         :
         (<Link to="/login">
-            <Button text="Entrar" grayDark />
+            <Button text="Entrar" blue />
         </Link>)
 
     return (

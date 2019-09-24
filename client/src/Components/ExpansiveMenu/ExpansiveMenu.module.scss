@@ -1,0 +1,37 @@
+@import "../../assets/css/variables.scss";
+
+.displayNone {
+  display: none;
+}
+.menu {
+  width: 100%;
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: $color-white;
+    color: $color-gray-dark;
+    &:hover {
+      cursor: pointer;
+      box-shadow: 3px 3px 10px rgba(100, 100, 100, 0.3);
+    }
+    .icon {
+      width: 10px;
+      height: 15px;
+    }
+  }
+  .optionsContent {
+    background-color: $color-white;
+    color: $color-gray;
+    p {
+        padding-left: 30px;
+      &:hover {
+        cursor: pointer;
+        color: $color-blue-light;
+        //box-shadow: 3px 3px 10px rgba(100, 100, 100, 0.3);
+      }
+    }
+  }
+}
