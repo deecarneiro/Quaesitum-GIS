@@ -3,42 +3,61 @@ import styles from "../Login.module.scss";
 import Button from "../../../Components/Button/Button";
 import { Link } from "react-router-dom";
 import { userService } from "../../../Services";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as yup from "yup";
 
-const saveUser = async (event) => {
-    event.preventDefault();
-    const name = document.querySelector("input[name=name]").value;
-    const email = document.querySelector("input[name=email]").value;
-    const password = document.querySelector("input[name=password]").value;
-    console.log(name);
-    console.log(email);
-    console.log(password);
-    try{
-        const response = await userService.saveUser(name, email, password);
+const saveUser = async (user) => {
+    console.log(user.name);
+    console.log(user.email);
+    console.log(user.password);
+    try {
+        const response = await userService.saveUser(user.name, user.email, user.password);
         console.log(response);
-    }catch(error){
-        console.log(error);
+    } catch (error) {
+        console.log(error.response.data);
     }
 }
+
+const initialValues = {
+    name: "",
+    email: "",
+    password: ""
+}
+
+const validation = yup.object().shape({
+    name: yup.string().required("Campo obrigatório").min(5, "O nome deve ter no mínimo 5 caracteres"),
+    email: yup.string().required("Campo obrigatório").email("Deve ser informado um email válido"),
+    password: yup.string().required("Campo obrigatório")
+        .matches(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W+)/,
+            { message: "A senha deve ter entre 8 e 12 caracteres (a, A, 0, !)" })
+        .min(8, "A senha deve ter entre 8 e 12 caracteres (a, A, 0, !)")
+        .max(12, "A senha deve ter entre 8 e 12 caracteres (a, A, 0, !)")
+})
 
 const Register = () => {
     return (
         <>
             <h2 className={styles.title}>Cadastrar-se</h2>
             <p className={styles.description}>Cadastre-se para utilizar o sistema</p>
-            <form method="post" onSubmit={saveUser}>
-                <div className={styles.formField}>
-                    <input name="name" type="text" className="form-control" placeholder="Nome" />
-                </div>
-                <div className={styles.formField}>
-                    <input name="email" type="email" className="form-control" placeholder="Email" />
-                </div>
-                <div className={styles.formField}>
-                    <input name="password" type="password" className="form-control" placeholder="Senha" />
-                </div>
-                <div className={styles.formField}>
-                    <Button text="Cadastrar" grayDark />
-                </div>
-            </form>
+            <Formik initialValues={initialValues} onSubmit={saveUser} validationSchema={validation}>
+                <Form>
+                    <div className={styles.formField}>
+                        <Field name="name" type="text" className="form-control" placeholder="Nome" />
+                        <ErrorMessage className={styles.errorMessage} component="span" name="name" />
+                    </div>
+                    <div className={styles.formField}>
+                        <Field name="email" type="email" className="form-control" placeholder="Email" />
+                        <ErrorMessage className={styles.errorMessage} component="span" name="email" />
+                    </div>
+                    <div className={styles.formField}>
+                        <Field name="password" type="password" className="form-control" placeholder="Senha" />
+                        <ErrorMessage className={styles.errorMessage} component="span" name="password" />
+                    </div>
+                    <div className={styles.formField}>
+                        <Button text="Cadastrar" grayDark />
+                    </div>
+                </Form>
+            </Formik>
             <Link className={styles.message} to="/terms">
                 Ao se inscrever, você concorda com nossos <br />
                 Termos e Condições
