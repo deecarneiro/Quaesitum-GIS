@@ -1,8 +1,8 @@
-"use strict";
 
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const config = require('./config')
 const cors = require('cors');
 
 const app = express();
@@ -10,9 +10,7 @@ app.use(cors());
 const router = express.Router();
 
 //Connecting database
-mongoose.connect("mongodb+srv://root:root@cluster0-6xeoe.mongodb.net/test", {
-  useNewUrlParser: true
-});
+mongoose.connect(config.connectionString, { useNewUrlParser: true , useCreateIndex: true});
 
 //Importing models
 const User = require("./models/user");
