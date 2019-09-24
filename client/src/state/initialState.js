@@ -1,3 +1,6 @@
 export const initialState = () =>({
-    isLogged: sessionStorage.getItem("token") ? true : false
+    user: {
+        name: "",
+        isLogged: sessionStorage.getItem("token") ? true : false
+    }
 })

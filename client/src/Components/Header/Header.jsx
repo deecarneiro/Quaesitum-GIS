@@ -8,11 +8,9 @@ import { userContext } from "../../App";
 
 
 const Header = () => {
-    const { isLogged } = useContext(userContext);
-    const userName = sessionStorage.getItem("name");
+    const { user } = useContext(userContext);
 
-
-    const headerOptions = isLogged ?
+    const headerOptions = user.isLogged ?
         (<ul className="navbar-nav mr-auto">
             <li className={`nav-item actived ${styles.option}`}>
                 <Link className="nav-link" to="/generateMap">Criar mapa</Link>
@@ -31,9 +29,9 @@ const Header = () => {
             </li>
         </ul>)
 
-    const userOptions = isLogged ?
+    const userOptions = user.isLogged ?
         (<div className={`${styles.profileOptions} ${styles.option}`}>
-            <p>{userName}</p>
+            <p>{user.name}</p>
             <img className={styles.icon} src={iconPerfil} />
         </div>)
         :
