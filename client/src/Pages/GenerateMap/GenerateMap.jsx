@@ -4,6 +4,10 @@ import ExpansiveMenu from "../../Components/ExpansiveMenu/ExpansiveMenu";
 import Button from "../../Components/Button/Button";
 import back from "../../assets/images/seta-anterior.svg";
 import next from "../../assets/images/seta-proximo.svg";
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+
+const position = [-8.05428,-34.8813];
+
 const GenerateMap = () => {
     return (
         <div className={styles.body}>
@@ -37,7 +41,15 @@ const GenerateMap = () => {
                 </ExpansiveMenu>
             </div>
             <div className={styles.mapArea}>
-
+            <Map center={position} zoom={13}>
+               <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                />
+                <Marker position={position}>
+                     <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
+                </Marker>
+                </Map>
             </div>
         </div>
     )
