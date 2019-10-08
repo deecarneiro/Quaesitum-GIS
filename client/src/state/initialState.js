@@ -1,6 +1,6 @@
 export const initialState = () =>({
     user: {
-        name: sessionStorage.getItem("name") ? sessionStorage.getItem("name") : "",
-        isLogged: sessionStorage.getItem("token") ? true : false
+        name: localStorage.getItem("name") ? localStorage.getItem("name") : "",
+        isLogged: localStorage.getItem("token") ? true : false
     }
 })

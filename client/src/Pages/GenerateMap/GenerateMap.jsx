@@ -10,8 +10,8 @@ const GenerateMap = () => {
             <div className={styles.leftMenu}>
                 <div className={styles.mapConfig}>
                     <div className={styles.arrows}>
-                        <button><img src={back}/></button>
-                        <button><img src={next}/></button>
+                        <button><img src={back} alt="_"/></button>
+                        <button><img src={next} alt="_"/></button>
                     </div>
                     <Button text="Salvar Mapa" blue/>
                 </div>
