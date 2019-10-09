@@ -16,8 +16,7 @@ const publicRoutes = [
     ></Route>,
     <Route key="3" path='/about' exact={true}
         component={() => <About />}
-    ></Route>,
-    <Redirect key="4" to="/" />
+    ></Route>
 ];
 
 const privateRoutes = [
@@ -37,14 +36,16 @@ export default () => {
     if (user.isLogged) {
         return (
             <Switch>
-                {privateRoutes}
-                {publicRoutes}
+                {privateRoutes},
+                {publicRoutes},
+                <Redirect key="4" to="/home" />
             </Switch>
         )
     }
     return (
         <Switch>
-            {publicRoutes}
+            {publicRoutes},
+            <Redirect key="4" to="/" />
         </Switch>
     )
 }

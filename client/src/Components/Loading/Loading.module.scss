@@ -1,0 +1,26 @@
+@import "../../assets/css/variables.scss";
+
+.loading {
+  max-width: 8px;
+  max-height: 8px;
+  z-index: 90;
+  position: fixed;
+  top: 45%;
+  left: 45%;
+  img {
+    animation: spin 5s linear infinite;
+    padding-left: 12px;
+  }
+  span{
+    color: $color-gray-dark;
+    font-size: 20px;
+  }
+}
+@keyframes spin {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
