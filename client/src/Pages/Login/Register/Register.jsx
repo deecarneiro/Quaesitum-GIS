@@ -1,20 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../Login.module.scss";
 import Button from "../../../Components/Button/Button";
 import { Link } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { userService } from "../../../Services";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as yup from "yup";
+import Loading from "../../../Components/Loading/Loading";
 
-const saveUser = async (user) => {
-    console.log(user.name);
-    console.log(user.email);
-    console.log(user.password);
+const saveUser = async (user, setLoad, history) => {
+    setLoad(true);
     try {
         const response = await userService.saveUser(user.name, user.email, user.password);
         console.log(response);
+        setLoad(false);
+        history.push("/login");
     } catch (error) {
         console.log(error.response.data);
+        setLoad(false);
     }
 }
 
@@ -34,12 +37,18 @@ const validation = yup.object().shape({
         .max(12, "A senha deve ter entre 8 e 12 caracteres (a, A, 0, !)")
 })
 
-const Register = () => {
+const Register = props => {
+    const [load, setLoad] = useState(false);
+
+    const _saveUser = (user) => {
+        saveUser(user, setLoad, props.history);
+    }
+
     return (
         <>
             <h2 className={styles.title}>Cadastrar-se</h2>
             <p className={styles.description}>Cadastre-se para utilizar o sistema</p>
-            <Formik initialValues={initialValues} onSubmit={saveUser} validationSchema={validation}>
+            <Formik initialValues={initialValues} onSubmit={_saveUser} validationSchema={validation}>
                 <Form>
                     <div className={styles.formField}>
                         <Field name="name" type="text" className="form-control" placeholder="Nome" />
@@ -62,8 +71,9 @@ const Register = () => {
                 Ao se inscrever, você concorda com nossos <br />
                 Termos e Condições
             </Link>
+            {load && <Loading message="Cadastrando" />}
         </>
     )
 }
 
-export default Register;
+export default withRouter(Register);
