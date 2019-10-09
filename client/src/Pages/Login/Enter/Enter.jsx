@@ -13,17 +13,22 @@ const Enter = (props) => {
 
     const loadUser = async (user) => {
         try {
+            console.log("antes");
             const response = await userService.loadUser(user.email, user.password);
+            console.log("depois");
+            console.log(response.status);
             if (response.status === 201) {
                 console.log(response.data);
-                sessionStorage.setItem("token", response.data.token);
-                sessionStorage.setItem("name", response.data.data.name);
+                localStorage.setItem("token", response.data.token);
+                localStorage.setItem("name", response.data.data.name);
                 await setUserName(response.data.data.name);
                 await setUserLogged(true);
                 props.history.push("/home");
+            }else{
+                console.log("Deu ruim");
             }
         } catch (error) {
-            console.log(error.response);
+            console.log(error);
         }
     }
 

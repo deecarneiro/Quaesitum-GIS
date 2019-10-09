@@ -1,43 +1,22 @@
 import React, { useContext } from "react";
+import { withRouter } from "react-router-dom";
 import styles from "./Header.module.scss";
-import Button from "../Button/Button";
-import { Link } from "react-router-dom";
 import iconMap from "../../assets/images/map-icon.png";
-import iconPerfil from "../../assets/images/perfil-icon.png";
 import { userContext } from "../../App";
+import HeaderOptions from "./HeaderOptions/HeaderOptions";
+import UserOptions from "./UserOptions/UserOptions";
 
 
-const Header = () => {
-    const { user } = useContext(userContext);
+const Header = props => {
+    const { user, setUserLogged } = useContext(userContext);
+    const { history } = props;
 
-    const headerOptions = user.isLogged ?
-        (<ul className="navbar-nav mr-auto">
-            <li className={`nav-item actived ${styles.option}`}>
-                <Link className="nav-link" to="/generateMap">Criar mapa</Link>
-            </li>
-            <li className={`nav-item ${styles.option}`}>
-                <Link className="nav-link" to="/home">Coleção de Mapas</Link>
-            </li>
-        </ul>)
-        :
-        (<ul className="navbar-nav mr-auto">
-            <li className={`nav-item actived ${styles.option}`}>
-                <Link className="nav-link" to="/">Cadastro</Link>
-            </li>
-            <li className={`nav-item ${styles.option}`}>
-                <Link className="nav-link" to="/about">Sobre</Link>
-            </li>
-        </ul>)
-
-    const userOptions = user.isLogged ?
-        (<div className={`${styles.profileOptions} ${styles.option}`}>
-            <p>{user.name}</p>
-            <img className={styles.icon} src={iconPerfil} />
-        </div>)
-        :
-        (<Link to="/login">
-            <Button text="Entrar" blue />
-        </Link>)
+    const logout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("name");
+        setUserLogged(false);
+        history.push("/login");
+    }
 
     return (
         <nav className={`${styles.nav} navbar navbar-expand-lg navbar-light`}>
@@ -47,11 +26,11 @@ const Header = () => {
                         <img src={iconMap} alt="_" />
                         Quaesitum GIS
                     </a>
-                    {headerOptions}
+                    <HeaderOptions user={user} />
                 </div>
                 <div className={styles.rightHeader}>
                     <div className={styles.btnArea}>
-                        {userOptions}
+                        <UserOptions user={user} logout={logout} />
                     </div>
                 </div>
             </div>
@@ -59,4 +38,4 @@ const Header = () => {
     )
 }
 
-export default Header;
+export default withRouter(Header);
