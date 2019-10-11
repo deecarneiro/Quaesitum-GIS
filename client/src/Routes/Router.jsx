@@ -5,14 +5,14 @@ import About from '../Pages/About/About';
 import Home from '../Pages/Home/Home';
 import GenerateMap from '../Pages/GenerateMap/GenerateMap';
 import { userContext } from '../App';
-import EditProfile from '../Pages/EditProfile/EditProfile';
+import EditProfile from '../Pages/Login/EditProfile/EditProfile';
 
 const publicRoutes = [
     <Route key="1" path='/' exact={true}
         component={() => <Login />}
     ></Route>,
     <Route key="2" path='/login' exact={true}
-        component={() => <Login enter />}
+        component={() => <Login enter="enter" />}
     ></Route>,
     <Route key="3" path='/about' exact={true}
         component={() => <About />}
@@ -27,7 +27,7 @@ const privateRoutes = [
         component={() => <GenerateMap />}
     ></Route>,
     <Route key="6" path='/editProfile' exact={true}
-        component={() => <EditProfile />}
+        component={() => <Login enter="editProfile" />}
     ></Route>
 ]
 
