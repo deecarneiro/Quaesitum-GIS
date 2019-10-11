@@ -48,11 +48,10 @@ const FormEdit = () => {
                         <ErrorMessage className={styles.errorMessage} component="span" name="password" />
                     </div>
                     <div className={styles.formField}>
-                        <Button text="Salvar" grayDark />
+                        {load ? <Loading /> : <Button text="Salvar" grayDark />}
                     </div>
                 </Form>
             </Formik>
-            {load && <Loading message="Carregando" />}
         </>
     )
 }

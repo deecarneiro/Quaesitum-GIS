@@ -66,14 +66,14 @@ const Enter = (props) => {
                         <ErrorMessage className={styles.errorMessage} component="span" name="password" />
                     </div>
                     <div className={styles.formField}>
-                        <Button text="Entrar" grayDark />
+                        {load ? <Loading message="Entrando" /> :
+                            <Button text="Entrar" grayDark />}
                     </div>
                 </Form>
             </Formik>
             <Link className={styles.message} to="/recoverPassword">
                 Esqueceu a senha?
             </Link>
-            {load && <Loading message="Entrando" />}
         </>
     )
 }

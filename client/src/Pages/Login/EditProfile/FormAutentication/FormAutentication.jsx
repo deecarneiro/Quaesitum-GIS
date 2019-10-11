@@ -38,11 +38,10 @@ const FormAutentication = props => {
                         <ErrorMessage className={styles.errorMessage} component="span" name="password" />
                     </div>
                     <div className={styles.formField}>
-                        <Button text="Verificar" grayDark />
+                        {load ? <Loading /> : <Button text="Verificar" grayDark />}
                     </div>
                 </Form>
             </Formik>
-            {load && <Loading message="Carregando" />}
         </>
     )
 }

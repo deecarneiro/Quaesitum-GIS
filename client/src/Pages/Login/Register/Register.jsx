@@ -63,7 +63,8 @@ const Register = props => {
                         <ErrorMessage className={styles.errorMessage} component="span" name="password" />
                     </div>
                     <div className={styles.formField}>
-                        <Button text="Cadastrar" grayDark />
+                        {load ? <Loading message="Cadastrando" /> :
+                            <Button text="Cadastrar" grayDark />}
                     </div>
                 </Form>
             </Formik>
@@ -71,7 +72,6 @@ const Register = props => {
                 Ao se inscrever, você concorda com nossos <br />
                 Termos e Condições
             </Link>
-            {load && <Loading message="Cadastrando" />}
         </>
     )
 }
