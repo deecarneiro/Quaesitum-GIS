@@ -1,25 +1,35 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import styles from "./Header.module.scss";
 import iconMap from "../../assets/images/map-icon.png";
-import { userContext } from "../../App";
+import { UserContext } from "../../App";
 import HeaderOptions from "./HeaderOptions/HeaderOptions";
 import UserOptions from "./UserOptions/UserOptions";
 import Loading from "../Loading/Loading";
+import { userService } from "../../Services";
 
 
 const Header = props => {
-    const { user, setUserLogged } = useContext(userContext);
+    const { user, setUserLogged, setUserName } = useContext(UserContext);
     const { history } = props;
     const [load, setLoad] = useState(false);
     const logout = async () => {
         await setLoad(true);
         localStorage.removeItem("token");
-        localStorage.removeItem("name");
+        localStorage.removeItem("id");
         await setUserLogged(false);
         await setLoad(false);
         history.push("/login");
     }
+
+    useEffect(() => {
+        let id = localStorage.getItem("id");
+        userService.getUser(id).then((resp) => {
+            setUserName(resp.data.name);
+        }).catch((error) => {
+        console.log(error);
+        })
+    }, [])
 
     return (
         <>

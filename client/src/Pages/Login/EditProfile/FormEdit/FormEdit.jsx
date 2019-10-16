@@ -1,31 +1,12 @@
-import React, { useState } from "react";
-import styles from "../Login.module.scss";
-import Button from "../../../Components/Button/Button";
-import { Link } from "react-router-dom";
-import { withRouter } from "react-router-dom";
-import { userService } from "../../../Services";
-import { Formik, Field, Form, ErrorMessage } from "formik";
+import React, { useState, useContext } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import Button from "../../../../Components/Button/Button";
 import * as yup from "yup";
-import Loading from "../../../Components/Loading/Loading";
+import styles from "../../Login.module.scss";
+import Loading from "../../../../Components/Loading/Loading";
+import { userService } from "../../../../Services";
+import { UserContext } from "../../../../App";
 
-const saveUser = async (user, setLoad, history) => {
-    setLoad(true);
-    try {
-        const response = await userService.saveUser(user.name, user.email, user.password);
-        console.log(response);
-        setLoad(false);
-        history.push("/login");
-    } catch (error) {
-        console.log(error.response.data);
-        setLoad(false);
-    }
-}
-
-const initialValues = {
-    name: "",
-    email: "",
-    password: ""
-}
 
 const validation = yup.object().shape({
     name: yup.string().required("Campo obrigatório").min(5, "O nome deve ter no mínimo 5 caracteres"),
@@ -35,20 +16,38 @@ const validation = yup.object().shape({
             { message: "A senha deve ter entre 8 e 12 caracteres (a, A, 0, !)" })
         .min(8, "A senha deve ter entre 8 e 12 caracteres (a, A, 0, !)")
         .max(12, "A senha deve ter entre 8 e 12 caracteres (a, A, 0, !)")
-})
+});
 
-const Register = props => {
+const FormEdit = props => {
+    const { initialName, initialEmail, initialPassword } = props;
     const [load, setLoad] = useState(false);
+    const { user } = useContext(UserContext);
+    const _editUser = (data) => {
+        setLoad(true);
 
-    const _saveUser = (user) => {
-        saveUser(user, setLoad, props.history);
+        userService.updateUser(user.id, data.name, data.email, data.password).then((resp) => {
+            if (resp.status === 200) {
+                console.log(resp);
+                alert(resp.data.message);
+            } else {
+                console.log(resp);
+                alert(resp.data.message);
+            }
+            setLoad(false);
+        }).catch((error) => {
+            console.log(error);
+            setLoad(false);
+        })
     }
+    const initialValues = {
+        name: initialName,
+        email: initialEmail,
+        password: initialPassword
+    };
 
     return (
         <>
-            <h2 className={styles.title}>Cadastrar-se</h2>
-            <p className={styles.description}>Cadastre-se para utilizar o sistema</p>
-            <Formik initialValues={initialValues} onSubmit={_saveUser} validationSchema={validation}>
+            <Formik initialValues={initialValues} onSubmit={_editUser} validationSchema={validation}>
                 <Form>
                     <div className={styles.formField}>
                         <Field name="name" type="text" className="form-control" placeholder="Nome" />
@@ -63,17 +62,12 @@ const Register = props => {
                         <ErrorMessage className={styles.errorMessage} component="span" name="password" />
                     </div>
                     <div className={styles.formField}>
-                        {load ? <Loading message="Cadastrando" /> :
-                            <Button text="Cadastrar" grayDark />}
+                        {load ? <Loading /> : <Button text="Salvar" grayDark />}
                     </div>
                 </Form>
             </Formik>
-            <Link className={styles.message} to="/terms">
-                Ao se inscrever, você concorda com nossos <br />
-                Termos e Condições
-            </Link>
         </>
     )
 }
 
-export default withRouter(Register);
+export default FormEdit;

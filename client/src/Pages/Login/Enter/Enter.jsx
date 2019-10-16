@@ -3,7 +3,7 @@ import styles from "../Login.module.scss";
 import Button from "../../../Components/Button/Button";
 import { Link } from "react-router-dom";
 import { userService } from "../../../Services";
-import { userContext } from "../../../App";
+import { UserContext } from "../../../App";
 import { withRouter } from "react-router-dom";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as yup from "yup";
@@ -23,15 +23,15 @@ const validation = yup.object().shape({
         .max(12, "A senha deve ter entre 8 e 12 caracteres (a, A, 0, !)")
 });
 
-const loadUser = async (user, setUserLogged, setUserName, setLoad, history) => {
+const loadUser = async (user, setUserLogged, setUserId, setUserName, setLoad, history) => {
     setLoad(true);
     try {
         const response = await userService.loadUser(user.email, user.password);
-        console.log(response.status);
+        console.log(response);
         if (response.status === 201) {
-            console.log(response.data);
             localStorage.setItem("token", response.data.token);
-            localStorage.setItem("name", response.data.data.name);
+            localStorage.setItem("id", response.data.data.id);
+            await setUserId(response.data.data.id);
             await setUserName(response.data.data.name);
             await setUserLogged(true);
             setLoad(false);
@@ -45,10 +45,10 @@ const loadUser = async (user, setUserLogged, setUserName, setLoad, history) => {
 
 const Enter = (props) => {
     const [load, setLoad] = useState(false);
-    const { setUserLogged, setUserName } = useContext(userContext);
+    const { setUserLogged, setUserId, setUserName } = useContext(UserContext);
 
     const _loadUser = (user) => {
-        loadUser(user, setUserLogged, setUserName, setLoad, props.history);
+        loadUser(user, setUserLogged, setUserId, setUserName, setLoad, props.history);
     }
 
     return (
@@ -66,14 +66,14 @@ const Enter = (props) => {
                         <ErrorMessage className={styles.errorMessage} component="span" name="password" />
                     </div>
                     <div className={styles.formField}>
-                        <Button text="Entrar" grayDark />
+                        {load ? <Loading message="Entrando" /> :
+                            <Button text="Entrar" grayDark />}
                     </div>
                 </Form>
             </Formik>
             <Link className={styles.message} to="/recoverPassword">
                 Esqueceu a senha?
             </Link>
-            {load && <Loading message="Entrando" />}
         </>
     )
 }

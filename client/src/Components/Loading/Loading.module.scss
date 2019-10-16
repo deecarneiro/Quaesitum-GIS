@@ -1,15 +1,15 @@
 @import "../../assets/css/variables.scss";
 
 .loading {
-  max-width: 8px;
-  max-height: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   z-index: 90;
-  position: fixed;
-  top: 45%;
-  left: 45%;
+  margin: 10px 0;
   img {
+    max-width: 50px;
+    max-height: 50px;
     animation: spin 5s linear infinite;
-    padding-left: 12px;
   }
   span{
     color: $color-gray-dark;
