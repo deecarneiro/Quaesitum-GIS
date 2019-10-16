@@ -57,7 +57,12 @@ exports.post = async(req, res, next) => {
 };
 
 exports.put = async(req, res, next) => {
-    await repository.update(req.params.id, req.body)
+    await repository.update(req.params.id, 
+        {   name : req.body.name,
+            email : req.body.email,
+            password : md5(req.body.password+global.SALT_KEY)
+        })
+
     try{
         res.status(200).send({
             message: 'Usuário atualizado com sucesso'
