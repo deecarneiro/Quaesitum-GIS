@@ -1,18 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./Home.module.scss";
 import MapList from "./MapList/MapList";
 import ConstantList from "./ConstantList";
 import Loading from "../../Components/Loading/Loading";
+import { userService } from "../../Services";
+import { UserContext } from "../../App";
+
 const Home = () => {
     const [load, setLoad] = useState(false);
     const [list, setList] = useState([]);
-
+    const { user } = useContext(UserContext);
+    
     useEffect(() => {
         setLoad(true);
-        setTimeout(() => {
-            setList(ConstantList);
+        userService.getUser(user.id).then((resp) => {
+        console.log(resp.data);
+        setLoad(false);
+        }).catch((error) => {
+            console.log(error);
             setLoad(false);
-        }, 3000);
+        });
     }, []);
 
     const contentMap = (list.length !== 0) ? <MapList listMap={list} /> :

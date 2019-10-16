@@ -1,15 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Button from "../../../../Components/Button/Button";
 import * as yup from "yup";
 import styles from "../../Login.module.scss";
 import Loading from "../../../../Components/Loading/Loading";
+import { userService } from "../../../../Services";
+import { UserContext } from "../../../../App";
 
-const initialValues = {
-    name: "",
-    email: "",
-    password: ""
-};
 
 const validation = yup.object().shape({
     name: yup.string().required("Campo obrigatório").min(5, "O nome deve ter no mínimo 5 caracteres"),
@@ -21,15 +18,32 @@ const validation = yup.object().shape({
         .max(12, "A senha deve ter entre 8 e 12 caracteres (a, A, 0, !)")
 });
 
-const FormEdit = () => {
+const FormEdit = props => {
+    const { initialName, initialEmail, initialPassword } = props;
     const [load, setLoad] = useState(false);
-    const _editUser = (user) => {
+    const { user } = useContext(UserContext);
+    const _editUser = (data) => {
         setLoad(true);
-        setTimeout(() => {
+
+        userService.updateUser(user.id, data.name, data.email, data.password).then((resp) => {
+            if (resp.status === 200) {
+                console.log(resp);
+                alert(resp.data.message);
+            } else {
+                console.log(resp);
+                alert(resp.data.message);
+            }
             setLoad(false);
-            alert(`${user.name} ${user.email} ${user.password}`);
-        }, 3000);
+        }).catch((error) => {
+            console.log(error);
+            setLoad(false);
+        })
     }
+    const initialValues = {
+        name: initialName,
+        email: initialEmail,
+        password: initialPassword
+    };
 
     return (
         <>

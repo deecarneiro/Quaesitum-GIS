@@ -67,7 +67,6 @@ exports.put = async(req, res, next) => {
             message: 'Falha ao processar sua requisição'
         });
     };
-    
 };
 
 exports.delete = async(req, res, next) => {
@@ -113,6 +112,7 @@ exports.authenticate = async(req, res, next) => {
         res.status(201).send({
             token : token,
             data:{
+                id: user.id,
                 email: user.email,
                 name: user.name
             }

@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import Button from "../../../../Components/Button/Button";
 import * as yup from "yup";
 import styles from "../../Login.module.scss";
 import Loading from "../../../../Components/Loading/Loading";
+import { UserContext } from "../../../../App";
+import { userService } from "../../../../Services";
 
 const initialValues = {
     password: ""
@@ -19,14 +21,31 @@ const validation = yup.object().shape({
 
 const FormAutentication = props => {
 
-    const { setAutentication } = props;
+    const { setAutentication, setName, setEmail, setPassword } = props;
     const [load, setLoad] = useState(false);
-    const checkPassword = () => {
+    const { user } = useContext(UserContext);
+
+    const checkPassword = (data) => {
         setLoad(true);
-        setTimeout(() => {
-            setAutentication(true);
-            setLoad(false);
-        }, 3000);
+        userService.getUser(user.id)
+            .then((resp) => {
+                userService.loadUser(resp.data.email, data.password)
+                    .then((resp) => {
+                        if (resp.status === 201) {
+                            setName(resp.data.data.name);
+                            setEmail(resp.data.data.email);
+                            setPassword(data.password);
+                            setAutentication(true);
+                        }
+                        setLoad(false);
+                    }).catch((error) => {
+                        console.log(error);
+                        setLoad(false);
+                    })
+            }).catch((error) => {
+                console.log(error);
+                setLoad(false);
+            })
     }
 
     return (

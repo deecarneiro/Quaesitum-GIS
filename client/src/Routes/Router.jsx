@@ -4,7 +4,7 @@ import Login from '../Pages/Login/Login';
 import About from '../Pages/About/About';
 import Home from '../Pages/Home/Home';
 import GenerateMap from '../Pages/GenerateMap/GenerateMap';
-import { userContext } from '../App';
+import { UserContext } from '../App';
 import EditProfile from '../Pages/Login/EditProfile/EditProfile';
 
 const publicRoutes = [
@@ -32,7 +32,7 @@ const privateRoutes = [
 ]
 
 export default () => {
-    const { user } = useContext(userContext);
+    const { user } = useContext(UserContext);
     if (user.isLogged) {
         return (
             <Switch>

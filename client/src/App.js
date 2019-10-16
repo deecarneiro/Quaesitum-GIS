@@ -6,7 +6,7 @@ import Router from './Routes/Router';
 import { initialState } from './state/initialState';
 import { setUserLogged, setUserName, setUserId } from './state/userActions';
 
-export const userContext = React.createContext({
+export const UserContext = React.createContext({
   user: {
     id: "",
     name: "",
@@ -43,12 +43,12 @@ class App extends Component {
     return (
       <div className={styles.app}>
         <BrowserRouter>
-          <userContext.Provider value={value}>
+          <UserContext.Provider value={value}>
             <Header />
             <div className={styles.body}>
               <Router />
             </div>
-          </userContext.Provider>
+          </UserContext.Provider>
         </BrowserRouter>
       </div>
     );
