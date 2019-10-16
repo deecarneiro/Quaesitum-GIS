@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./GenerateMap.module.scss";
+import MapBar from "../../Components/MapBar/MapBar"
 import ExpansiveMenu from "../../Components/ExpansiveMenu/ExpansiveMenu";
 import Button from "../../Components/Button/Button";
 import back from "../../assets/images/seta-anterior.svg";
@@ -11,6 +12,9 @@ const position = [-8.05428,-34.8813];
 const GenerateMap = () => {
     return (
         <div className={styles.body}>
+        <div className={styles.mapBar}>
+            <MapBar />
+        </div>
             <div className={styles.leftMenu}>
                 <div className={styles.mapConfig}>
                     <div className={styles.arrows}>
