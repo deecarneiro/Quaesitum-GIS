@@ -37,7 +37,6 @@ export default () => {
         return (
             <Switch>
                 {privateRoutes},
-                {publicRoutes},
                 <Redirect key="4" to="/home" />
             </Switch>
         )
