@@ -10,11 +10,11 @@ import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
 const position = [-8.05428,-34.8813];
 
 const GenerateMap = () => {
-    return (
+    return (            
+    
+    <div>
+        <MapBar></MapBar>
         <div className={styles.body}>
-        <div className={styles.mapBar}>
-            <MapBar />
-        </div>
             <div className={styles.leftMenu}>
                 <div className={styles.mapConfig}>
                     <div className={styles.arrows}>
@@ -55,6 +55,7 @@ const GenerateMap = () => {
                 </Marker>
                 </Map>
             </div>
+        </div>
         </div>
     )
 }
