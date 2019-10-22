@@ -6,8 +6,9 @@
     background-color: $color-white;
     flex: 1 1;
     .mapConfig {
-      //display: flex;
-      //justify-content: space-between;
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
       margin-bottom: 20px;
       .arrows {
         display: flex;
@@ -34,4 +35,6 @@
   .mapArea {
     flex: 4 4;
   }
+
+  
 }
