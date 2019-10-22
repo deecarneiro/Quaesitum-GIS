@@ -44,7 +44,7 @@ const GenerateMap = () => {
     }
 
     useEffect(() => {
-        setMarkers(mockMarkers);
+        setMarkers(mockMarkers)
     }, [])
 
     return (            

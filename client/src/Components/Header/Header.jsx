@@ -1,62 +1,59 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
+import { withRouter } from "react-router-dom";
 import styles from "./Header.module.scss";
-import Button from "../Button/Button";
-import { Link } from "react-router-dom";
 import iconMap from "../../assets/images/map-icon.png";
-import iconPerfil from "../../assets/images/perfil-icon.png";
-import { userContext } from "../../App";
+import { UserContext } from "../../App";
+import HeaderOptions from "./HeaderOptions/HeaderOptions";
+import UserOptions from "./UserOptions/UserOptions";
+import Loading from "../Loading/Loading";
+import { userService } from "../../Services";
 
 
-const Header = () => {
-    const { user } = useContext(userContext);
+const Header = props => {
+    const { user, setUserLogged, setUserName } = useContext(UserContext);
+    const { history } = props;
+    const [load, setLoad] = useState(false);
+    const logout = async () => {
+        await setLoad(true);
+        localStorage.removeItem("token");
+        localStorage.removeItem("id");
+        await setUserLogged(false);
+        await setLoad(false);
+        history.push("/login");
+    }
 
-    const headerOptions = user.isLogged ?
-        (<ul className="navbar-nav mr-auto">
-            <li className={`nav-item actived ${styles.option}`}>
-                <Link className="nav-link" to="/generateMap">Criar mapa</Link>
-            </li>
-            <li className={`nav-item ${styles.option}`}>
-                <Link className="nav-link" to="/home">Coleção de Mapas</Link>
-            </li>
-        </ul>)
-        :
-        (<ul className="navbar-nav mr-auto">
-            <li className={`nav-item actived ${styles.option}`}>
-                <Link className="nav-link" to="/">Cadastro</Link>
-            </li>
-            <li className={`nav-item ${styles.option}`}>
-                <Link className="nav-link" to="/about">Sobre</Link>
-            </li>
-        </ul>)
-
-    const userOptions = user.isLogged ?
-        (<div className={`${styles.profileOptions} ${styles.option}`}>
-            <p>{user.name}</p>
-            <img className={styles.icon} src={iconPerfil} />
-        </div>)
-        :
-        (<Link to="/login">
-            <Button text="Entrar" blue />
-        </Link>)
+    useEffect(() => {
+        let id = localStorage.getItem("id");
+        userService.getUser(id).then((resp) => {
+            setUserName(resp.data.name);
+        }).catch((error) => {
+        console.log(error);
+        })
+    }, [])
 
     return (
-        <nav className={`${styles.nav} navbar navbar-expand-lg navbar-light`}>
-            <div className={styles.bodyHeader}>
-                <div className={styles.leftHeader}>
-                    <a className="navbar-brand" href="/#">
-                        <img src={iconMap} alt="_" />
-                        Quaesitum GIS
+        <>
+            <nav className={`${styles.nav} navbar navbar-expand-lg navbar-light`}>
+                <div className={styles.bodyHeader}>
+                    <div className={styles.leftHeader}>
+                        <a className="navbar-brand" href="/home">
+                            <img src={iconMap} alt="_" />
+                            Quaesitum GIS
                     </a>
-                    {headerOptions}
-                </div>
-                <div className={styles.rightHeader}>
-                    <div className={styles.btnArea}>
-                        {userOptions}
+                        <HeaderOptions user={user} />
+                    </div>
+                    <div className={styles.rightHeader}>
+                        <div className={styles.btnArea}>
+                            <UserOptions user={user} logout={logout} />
+                        </div>
                     </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+            {load &&
+                <Loading message="Saindo"/>
+            }
+        </>
     )
 }
 
-export default Header;
+export default withRouter(Header);

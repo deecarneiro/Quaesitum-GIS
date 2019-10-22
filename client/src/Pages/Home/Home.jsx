@@ -1,14 +1,28 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styles from "./Home.module.scss";
 import MapList from "./MapList/MapList";
 import ConstantList from "./ConstantList";
+import Loading from "../../Components/Loading/Loading";
+import { userService } from "../../Services";
+import { UserContext } from "../../App";
 
 const Home = () => {
+    const [load, setLoad] = useState(false);
+    const [list, setList] = useState([]);
+    const { user } = useContext(UserContext);
+    
+    useEffect(() => {
+        setLoad(true);
+        userService.getUser(user.id).then((resp) => {
+        console.log(resp.data);
+        setLoad(false);
+        }).catch((error) => {
+            console.log(error);
+            setLoad(false);
+        });
+    }, []);
 
-    const list = ConstantList;
-    //const list = null;
-
-    const contentMap = (list !== null && list.length !== 0) ? <MapList listMap={list} /> :
+    const contentMap = (list.length !== 0) ? <MapList listMap={list} /> :
         <p className={styles.message}>Nenhum mapa salvo!</p>;
 
     return (
@@ -16,9 +30,10 @@ const Home = () => {
             <div className={styles.titleArea}>
                 <h3>Mapas</h3>
             </div>
-            <div className={styles.contentMaps}>
-                {contentMap}
-            </div>
+            {load ? <Loading message="Carregando"/> :
+                <div className={styles.contentMaps}>
+                    {contentMap}
+                </div>}
         </>
     )
 }

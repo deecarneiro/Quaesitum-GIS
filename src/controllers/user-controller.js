@@ -57,7 +57,12 @@ exports.post = async(req, res, next) => {
 };
 
 exports.put = async(req, res, next) => {
-    await repository.update(req.params.id, req.body)
+    await repository.update(req.params.id, 
+        {   name : req.body.name,
+            email : req.body.email,
+            password : md5(req.body.password+global.SALT_KEY)
+        })
+
     try{
         res.status(200).send({
             message: 'Usuário atualizado com sucesso'
@@ -67,7 +72,6 @@ exports.put = async(req, res, next) => {
             message: 'Falha ao processar sua requisição'
         });
     };
-    
 };
 
 exports.delete = async(req, res, next) => {
@@ -113,6 +117,7 @@ exports.authenticate = async(req, res, next) => {
         res.status(201).send({
             token : token,
             data:{
+                id: user.id,
                 email: user.email,
                 name: user.name
             }

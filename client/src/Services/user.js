@@ -19,6 +19,19 @@ const user = {
             password: password
         }
         return axios.post(url, data);
+    },
+    getUser: (id) => {
+        const url = API + "/" +id;
+        return axios.get(url);
+    },
+    updateUser: (id, name, email, password) => {
+        const url = API + "/"+id;
+        const data = {
+            name: name,
+            email: email,
+            password: password
+        }
+        return axios.put(url, data);
     }
 }
 export default user;

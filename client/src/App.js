@@ -4,10 +4,11 @@ import Header from './Components/Header/Header';
 import { BrowserRouter } from "react-router-dom";
 import Router from './Routes/Router';
 import { initialState } from './state/initialState';
-import { setUserLogged, setUserName } from './state/userActions';
+import { setUserLogged, setUserName, setUserId } from './state/userActions';
 
-export const userContext = React.createContext({
+export const UserContext = React.createContext({
   user: {
+    id: "",
     name: "",
     isLogged: false
   }
@@ -20,6 +21,7 @@ class App extends Component {
     this.state = initialState();
     this.setUserLogged = setUserLogged.bind(this);
     this.setUserName = setUserName.bind(this);
+    this.setUserId = setUserId.bind(this);
   }
 
 
@@ -27,24 +29,26 @@ class App extends Component {
 
     const {
       setUserLogged,
-      setUserName
+      setUserName,
+      setUserId
     } = this;
 
     const value = {
       ...this.state,
       setUserName,
-      setUserLogged
+      setUserLogged,
+      setUserId
     }
 
     return (
       <div className={styles.app}>
         <BrowserRouter>
-          <userContext.Provider value={value}>
+          <UserContext.Provider value={value}>
             <Header />
             <div className={styles.body}>
               <Router />
             </div>
-          </userContext.Provider>
+          </UserContext.Provider>
         </BrowserRouter>
       </div>
     );
