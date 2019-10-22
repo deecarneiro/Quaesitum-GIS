@@ -1,5 +1,5 @@
 import React from 'react';
-import MapButton from '../MapButton/MapButton'
+
 
 //Images
 
@@ -12,6 +12,11 @@ import shareImg from "../../assets/images/share.png";
 //Styles
 import styles from "./MapBar.module.scss";
 
+//Components
+import DropDownButton from '../DropDownButton/DropDownButton';
+import IconButton from '../IconButton/IconButton';
+
+
 
 const MenuBar = () => {
 
@@ -19,15 +24,18 @@ const MenuBar = () => {
     const right = "float: right"
 
     return (
-        <div className={styles.mapBar} class="navbar navbar-expand-lg navbar-light bg-white">
+        <div className={`${styles.mapBar} navbar navbar-expand-lg navbar-light bg-white`} >
             <div className={styles.left}>
-                <MapButton icon={detailsImg} title={"Detalhes"}/>
-                <MapButton icon={addMapImg} title={"Adicionar"}/>
-                <MapButton icon={changingImg} title={"Mudar Mapa Base"}/>
+                <IconButton icon={detailsImg} title={"Detalhes"}/>
+                
+                <DropDownButton icon={addMapImg} title={"Adicionar"}>
+                <a className="dropdown-item bg-white">Teste 01</a>
+                </DropDownButton>
+                <IconButton icon={changingImg} title={"Mudar Mapa Base"}/>
             </div>
             <div className={styles.right}>
-                <MapButton icon={saveMapImg} title={"Salvar Mapa"}/>
-                <MapButton icon={shareImg} title={"Compartilhar"}/>
+                <IconButton icon={saveMapImg} title={"Salvar Mapa"}/>
+                <IconButton icon={shareImg} title={"Compartilhar"}/>
             </div>
         </div>
     )
