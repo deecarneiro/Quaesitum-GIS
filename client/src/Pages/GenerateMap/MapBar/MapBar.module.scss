@@ -1,0 +1,10 @@
+@import "../../../assets/css/variables.scss";
+
+.mapBar{
+    display: flex;
+    justify-content: space-between;
+    .divOptions{
+        display: flex;
+        justify-content: space-around;
+    }
+}
