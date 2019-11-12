@@ -5,6 +5,11 @@
     justify-content: space-between;
     .divOptions{
         display: flex;
-        justify-content: space-around;
+        button{
+            margin: 0 5px;
+        }
+        input{
+            margin: 0 5px;
+        }
     }
 }
