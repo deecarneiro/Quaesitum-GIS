@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import styles from "./GenerateMap.module.scss";
 import { withRouter } from "react-router-dom";
-import ExpansiveMenu from "../../Components/ExpansiveMenu/ExpansiveMenu";
-import Button from "../../Components/Button/Button";
 import IconButton from "../../Components/IconButton/IconButton";
 import MapBar from "./MapBar/MapBar";
 // import back from "../../assets/images/seta-anterior.svg";
@@ -12,6 +10,7 @@ import InfoImg from "../../assets/images/Info.png";
 import DetailsImg from "../../assets/images/details.png";
 import LegendsImg from "../../assets/images/legends.png";
 import { mapService } from "../../Services";
+import {UserContext} from "../../App";
 
 const position = [-8.05428, -34.8813];
 const basicMapsImages = [
@@ -24,6 +23,7 @@ const GenerateMap = props => {
     const [markers, setMarkers] = useState([]);
     const [indexBasicMap, setIndexBasicMap] = useState(0);
     const [mapName, setMapName] = useState("");
+    const { user } = useContext(UserContext);
 
     const modifyBasicMap = async () => {
         await setIndexBasicMap((indexBasicMap + 1) % basicMapsImages.length);
@@ -36,15 +36,10 @@ const GenerateMap = props => {
     }
 
     const saveMap = async () => {
-        console.log(mapName);
-        console.log(markers);
-        //const resp = await mapService.saveMap(mapName, markers);
-        //console.log(resp);
+        const resp = await mapService.saveMap(user.id, mapName, markers);
+        console.log(resp);
         history.push("/");
     }
-
-    useEffect(() => {
-    }, [markers])
 
     return (
         <div>

@@ -10,12 +10,13 @@ const Home = () => {
     const [load, setLoad] = useState(false);
     const [list, setList] = useState([]);
     const { user } = useContext(UserContext);
-    
+
     useEffect(() => {
         setLoad(true);
-        userService.getUser(user.id).then((resp) => {
-        console.log(resp.data);
-        setLoad(false);
+        userService.getMaps(user.id).then((maps) => {
+            console.log(maps);
+            setList(maps);
+            setLoad(false);
         }).catch((error) => {
             console.log(error);
             setLoad(false);
@@ -30,7 +31,7 @@ const Home = () => {
             <div className={styles.titleArea}>
                 <h3>Mapas</h3>
             </div>
-            {load ? <Loading message="Carregando"/> :
+            {load ? <Loading message="Carregando" /> :
                 <div className={styles.contentMaps}>
                     {contentMap}
                 </div>}
