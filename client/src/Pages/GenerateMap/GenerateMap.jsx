@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import styles from "./GenerateMap.module.scss";
 import { withRouter } from "react-router-dom";
@@ -19,7 +19,7 @@ const GenerateMap = props => {
     const [markers, setMarkers] = useState([]);
     const [indexBasicMap, setIndexBasicMap] = useState(0);
     const [mapName, setMapName] = useState("");
-    const { user } = useContext(UserContext);
+    const { user, map, setMap } = useContext(UserContext);
 
     const modifyBasicMap = async () => {
         await setIndexBasicMap((indexBasicMap + 1) % basicMapsImages.length);
@@ -36,6 +36,18 @@ const GenerateMap = props => {
         console.log(resp);
         history.push("/");
     }
+
+    useEffect(() => {
+        if(map.layers.length > 0){
+            setMarkers(map.layers[0]); //primeira camada de pontos
+            setMapName(map.name);
+        }
+        return setMap({
+            id: "",
+            name: "",
+            layers: []
+        });
+    }, []);
 
     return (
         <div>
