@@ -17,10 +17,11 @@ import styles from "./MapBar.module.scss";
 import DropDownButton from '../../../Components/DropDownButton/DropDownButton';
 import IconButton from '../../../Components/IconButton/IconButton';
 import ExpansiveMenu from "../../../Components/ExpansiveMenu/ExpansiveMenu";
+import ImportFile from '../../../Components/ImportFile/ImportFile';
 
 const MenuBar = props => {
 
-    const { onClickBasicMap, onClickSaveMap, setMapName } = props;
+    const { onClickBasicMap, onClickSaveMap, setMapName, importMap } = props;
 
     return (
         <div className={`${styles.mapBar} navbar navbar-expand-lg navbar-light bg-white`} >
@@ -36,6 +37,8 @@ const MenuBar = props => {
                 </DropDownButton>
 
                 <IconButton icon={changingImg} title={"Mudar Mapa Base"} onClick={onClickBasicMap} />
+                
+                <ImportFile functionImport={importMap}/>
             </div>
             <div className={styles.divOptions}>
                 <input type="text" className="form-control" placeholder="Título do mapa"
