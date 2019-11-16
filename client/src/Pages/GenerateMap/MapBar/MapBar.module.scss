@@ -1,0 +1,15 @@
+@import "../../../assets/css/variables.scss";
+
+.mapBar{
+    display: flex;
+    justify-content: space-between;
+    .divOptions{
+        display: flex;
+        button{
+            margin: 0 5px;
+        }
+        input{
+            margin: 0 5px;
+        }
+    }
+}

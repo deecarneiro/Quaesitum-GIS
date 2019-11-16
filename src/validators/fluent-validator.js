@@ -26,14 +26,14 @@
         erros.push({message : message});
  }
 
- ValidationContract.prototype.isEmail = (value, message) =>{
+ ValidationContract.prototype.isEmail = (value, message)=>{
      var reg = new RegExp(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/);
      if(!reg.test(value))
         erros.push({message : message});
  }
 
  ValidationContract.prototype.isPassword = (value, message) =>{
-     var reg = new RegExp(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9!?¡$%&/\()=?¿*+-_{};:,.\s]{8,12}/);
+     var reg = new RegExp(/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9!?¡$%&/\()=?¿@*+-_{};:,.\s]{8,12}/);
      if(!reg.test(value))
         erros.push({message : message});
 }
