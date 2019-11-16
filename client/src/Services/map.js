@@ -3,14 +3,17 @@ const axios = require('axios');
 const API = "http://localhost:5000/map";
 
 const map = {
-    saveMap: (id, name, layers) => {
+    saveMap: (id, name, layers, description, baseMap) => {
         const url = API;
         const data = {
             userId: id,
-            map: {
-                name: name,
-                layers: [layers]
-            }
+            name: name,
+            description: description,
+            baseMap: baseMap,
+            layers: [{
+                name: "camada 1",
+                latLng: layers
+            }]
         }
         console.log(data);
         return axios.post(url, data);

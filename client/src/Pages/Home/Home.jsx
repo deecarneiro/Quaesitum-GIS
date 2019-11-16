@@ -14,8 +14,8 @@ const Home = () => {
     useEffect(() => {
         setLoad(true);
         userService.getMaps(user.id).then((maps) => {
-            console.log(maps);
-            setList(maps);
+            console.log(maps.data);
+            setList(maps.data);
             setLoad(false);
         }).catch((error) => {
             console.log(error);

@@ -21,7 +21,7 @@ import ImportFile from '../../../Components/ImportFile/ImportFile';
 
 const MenuBar = props => {
 
-    const { onClickBasicMap, onClickSaveMap, setMapName, importMap } = props;
+    const { onClickBasicMap, onClickSaveMap, setMapName, importMap, mapName } = props;
 
     return (
         <div className={`${styles.mapBar} navbar navbar-expand-lg navbar-light bg-white`} >
@@ -42,7 +42,7 @@ const MenuBar = props => {
             </div>
             <div className={styles.divOptions}>
                 <input type="text" className="form-control" placeholder="Título do mapa"
-                    onChange={(event) => setMapName(event.target.value)} />
+                    onChange={(event) => setMapName(event.target.value)} value={mapName}/>
                 <IconButton icon={saveMapImg} title={"Salvar Mapa"} onClick={onClickSaveMap} />
                 <IconButton icon={shareImg} title={"Compartilhar"} />
             </div>

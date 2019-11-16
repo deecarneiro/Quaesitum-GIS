@@ -1,16 +1,17 @@
 import React, { useContext } from "react";
 import { withRouter } from "react-router-dom";
 import MapItem from "./MapItem/MapItem";
-import { userService } from '../../../Services/index';
+import { UserContext } from "../../../App";
 
 const MapList = (props) => {
     const { listMap, history } = props;
-    const { setMap } = useContext(userService); 
+    const { setMap } = useContext(UserContext); 
 
     return (
         listMap.map((mapItem) => {
-            const _setMap = async (mapItem) => {
+            const _setMap = async () => {
                 await setMap(mapItem);
+                console.log(mapItem);
                 history.push("/generateMap");
             }
             return (

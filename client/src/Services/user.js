@@ -34,11 +34,8 @@ const user = {
         return axios.put(url, data);
     },
     getMaps: (id) => {
-        const url = API + "/maps";
-        const data = {
-            id: id
-        }
-        return axios.get(url, data);
+        const url = "http://localhost:5000/map/user/" + id;
+        return axios.get(url);
     }
 }
 export default user;

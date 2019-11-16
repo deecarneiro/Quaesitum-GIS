@@ -19,6 +19,7 @@ const GenerateMap = props => {
     const [markers, setMarkers] = useState([]);
     const [indexBasicMap, setIndexBasicMap] = useState(0);
     const [mapName, setMapName] = useState("");
+    const [description, setDescription] = useState("");
     const { user, map, setMap } = useContext(UserContext);
     const [load, setLoad] = useState(false);
 
@@ -34,7 +35,7 @@ const GenerateMap = props => {
 
     const saveMap = async () => {
         setLoad(true);
-        const resp = await mapService.saveMap(user.id, mapName, markers);
+        const resp = await mapService.saveMap(user.id, mapName, markers, description, basicMapsImages[indexBasicMap]);
         console.log(resp);
         setLoad(false);
     }
@@ -60,7 +61,7 @@ const GenerateMap = props => {
             if (properties[i].trim() === "longitude") {
                 longitude = i;
             }
-            console.log(properties[i]);
+            //console.log(properties[i]);
         }
         let coords = [];
         for (let i = 1; i < listText.length && i < 1000; i++) {
@@ -77,9 +78,11 @@ const GenerateMap = props => {
     }
 
     useEffect(() => {
-        if (map.layers.length > 0) {
-            setMarkers(map.layers[0]); //primeira camada de pontos
+        if (map.layers && map.layers.length && map.layers.length > 0) {
+            console.log(map);
+            setMarkers(map.layers[0].latLng); //primeira camada de pontos
             setMapName(map.name);
+            setDescription(map.description)
         }
         return setMap({
             id: "",
@@ -88,15 +91,24 @@ const GenerateMap = props => {
         });
     }, []);
 
+    const _setDescription = (event) => {
+        setDescription(event.target.value);
+    }
+
     return (
         <div>
             {load ?
                 <Loading />
                 :
-                <MapBar onClickBasicMap={modifyBasicMap} onClickSaveMap={saveMap} setMapName={setMapName} importMap={importMap} />
+            <MapBar onClickBasicMap={modifyBasicMap} onClickSaveMap={saveMap} setMapName={setMapName} 
+                importMap={importMap} mapName={mapName}/>
             }
             <div className={styles.body}>
                 <div className={styles.leftMenu}>
+                    <div className={styles.wrapContent}>
+                        <textarea className={styles.description} placeholder="Descrição..." 
+                            onChange={_setDescription} value={description}/>
+                    </div>
                 </div>
                 <div className={styles.mapArea}>
                     <Map onClick={addMarkers} center={position} zoom={13}>

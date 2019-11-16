@@ -5,6 +5,14 @@
   .leftMenu {
     background-color: $color-white;
     flex: 1 1;
+    .wrapContent{
+      width: 100%;
+      padding-left: 30px;
+      .description{
+        width: 90%;
+        height: 150px;
+      }
+    }
     .mapConfig {
       display: flex;
       justify-content: space-between;
