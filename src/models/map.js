@@ -4,16 +4,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const schema = new Schema({
-   title: {
+   name: {
         type: String,
         required: true,
         trim: true
     },
-   type:{
+    description:{
         type: String,
-        required: true,
-        trim: true,
-        unique: true,
+        required:true,
     },
     baseMap:{
         type: String,
@@ -22,13 +20,26 @@ const schema = new Schema({
     },
     created:{
         type: Date,
-        required: true,
+        default: new Date().toJSON().slice(0,10).replace(/-/g,'/')
+
     },
     updated:{
         type:Date,
-        required:false,
-    }
+        default: null
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,   
+        ref: 'User',
+    },
+    layers:[{
+        name: String,
+        latLng: [{
+            _id:false,
+            lat: Number,
+            lng: Number,
+        }]
+    }]
 
 });
 
-module.exports = mongoose.model('Map', schema);
+module.exports = mongoose.model("Map", schema);

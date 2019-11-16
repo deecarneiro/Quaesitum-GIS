@@ -10,7 +10,12 @@ exports.get = async() => {
 
 exports.getById = async(id) =>{
     const res = await Map
-    .findById({});
+    .findById(id)
+    return res;
+}
+exports.getByUser = async(userId) => {
+    const res = await Map
+    .find({userId : userId})
     return res;
 }
 
@@ -20,13 +25,19 @@ exports.create = async(data) =>{
 }
 
 exports.update = async(id, data) =>{
+    var date = new Date().toJSON().slice(0,10).replace(/-/g,'/');
     await Map
-    findByIdAndUpdate(id, {
+    .findByIdAndUpdate(id, {
         $set:{
-            title: data.title,
-            type: data.type,
-            baseMap: data.baseMap
-            
+            name: data.name,
+            description: data.description,
+            baseMap: data.baseMap,
+            updated: new Date().toJSON().slice(0,10).replace(/-/g,'/')
         }
     })
+}
+
+exports.delete = async(id) => {
+    await Map
+    .findByIdAndDelete(id);
 }
