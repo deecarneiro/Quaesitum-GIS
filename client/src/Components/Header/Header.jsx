@@ -27,7 +27,7 @@ const Header = props => {
         userService.getUser(id).then((resp) => {
             setUserName(resp.data.name);
         }).catch((error) => {
-        console.log(error);
+            console.log(error);
         })
     }, [])
 
@@ -50,7 +50,7 @@ const Header = props => {
                 </div>
             </nav>
             {load &&
-                <Loading message="Saindo"/>
+                <Loading message="Saindo" />
             }
         </>
     )

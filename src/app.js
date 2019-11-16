@@ -14,10 +14,12 @@ mongoose.connect(config.connectionString, { useNewUrlParser: true , useCreateInd
 
 //Importing models
 const User = require("./models/user");
+const Map = require("./models/map");
 
 //Importing routes
 const indexRoute = require("./routes/index-router");
 const userRoute = require("./routes/user-route");
+const mapRoute = require('./routes/map-router');
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -34,5 +36,6 @@ app.use(
 
 app.use("/", indexRoute);
 app.use("/user", userRoute);
+app.use("/map", mapRoute);
 
 module.exports = app;
