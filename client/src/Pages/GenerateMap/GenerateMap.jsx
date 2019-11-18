@@ -21,6 +21,7 @@ const GenerateMap = props => {
     const [mapName, setMapName] = useState("");
     const [description, setDescription] = useState("");
     const { user, map, setMap } = useContext(UserContext);
+    const [newMap, setNewMap] = useState(true);
     const [load, setLoad] = useState(false);
 
     const modifyBasicMap = async () => {
@@ -35,7 +36,12 @@ const GenerateMap = props => {
 
     const saveMap = async () => {
         setLoad(true);
-        const resp = await mapService.saveMap(user.id, mapName, markers, description, basicMapsImages[indexBasicMap]);
+        let resp;
+        if(!newMap){
+            resp = await mapService.saveMap(user.id, mapName, markers, description, basicMapsImages[indexBasicMap]);
+        }else{
+            resp = await mapService.updateMap(user.id, mapName)
+        }
         console.log(resp);
         setLoad(false);
     }
@@ -82,7 +88,8 @@ const GenerateMap = props => {
             console.log(map);
             setMarkers(map.layers[0].latLng); //primeira camada de pontos
             setMapName(map.name);
-            setDescription(map.description)
+            setDescription(map.description);
+            setNewMap(false);
         }
         return setMap({
             id: "",
@@ -101,7 +108,7 @@ const GenerateMap = props => {
                 <Loading />
                 :
             <MapBar onClickBasicMap={modifyBasicMap} onClickSaveMap={saveMap} setMapName={setMapName} 
-                importMap={importMap} mapName={mapName}/>
+                importMap={importMap} mapName={mapName} newMap={newMap}/>
             }
             <div className={styles.body}>
                 <div className={styles.leftMenu}>

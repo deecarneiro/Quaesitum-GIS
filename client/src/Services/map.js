@@ -17,6 +17,21 @@ const map = {
         }
         console.log(data);
         return axios.post(url, data);
+    },
+    updateMap: () => {
+        const url = API;
+        const data = {
+            userId: id,
+            name: name,
+            description: description,
+            baseMap: baseMap,
+            layers: [{
+                name: "camada 1",
+                latLng: layers
+            }]
+        }
+        console.log(data);
+        return axios.put(url, data);
     }
 }
 export default map;
