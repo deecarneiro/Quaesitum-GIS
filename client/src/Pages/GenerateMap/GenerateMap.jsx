@@ -3,8 +3,6 @@ import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import styles from "./GenerateMap.module.scss";
 import { withRouter } from "react-router-dom";
 import MapBar from "./MapBar/MapBar";
-// import back from "../../assets/images/seta-anterior.svg";
-// import next from "../../assets/images/seta-proximo.svg";
 import { mapService } from "../../Services";
 import { UserContext } from "../../App";
 import Loading from "../../Components/Loading/Loading";
@@ -15,14 +13,21 @@ const basicMapsImages = [
     "https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
 ]
 
-const GenerateMap = props => {
-    const [markers, setMarkers] = useState([]);
+const GenerateMap = () => {
     const [indexBasicMap, setIndexBasicMap] = useState(0);
-    const [mapName, setMapName] = useState("");
-    const [description, setDescription] = useState("");
-    const { user, map, setMap } = useContext(UserContext);
+    const [mapPage, setMapPage] = useState({
+        id: "",
+        name: "",
+        description: "",
+        baseMap: basicMapsImages[indexBasicMap],
+        layers: [{
+            name: "",
+            latLng: []
+        }]
+    });
     const [newMap, setNewMap] = useState(true);
     const [load, setLoad] = useState(false);
+    const { user, map, setMap } = useContext(UserContext);
 
     const modifyBasicMap = async () => {
         await setIndexBasicMap((indexBasicMap + 1) % basicMapsImages.length);
@@ -31,16 +36,20 @@ const GenerateMap = props => {
     const addMarkers = async (event) => {
         const lat = event.latlng.lat;
         const lng = event.latlng.lng;
-        await setMarkers([...markers, { lat: lat, lng: lng }]);
+        let mapPage2 = { ...mapPage };
+        mapPage2.layers[0].latLng.push({ lat: lat, lng: lng });
+
+        await setMapPage(mapPage2);
     }
 
     const saveMap = async () => {
         setLoad(true);
+        console.log(mapPage);
         let resp;
-        if(!newMap){
-            resp = await mapService.saveMap(user.id, mapName, markers, description, basicMapsImages[indexBasicMap]);
-        }else{
-            resp = await mapService.updateMap(user.id, mapName)
+        if (newMap) {
+            resp = await mapService.saveMap(user.id, mapPage);
+        } else {
+            resp = await mapService.updateMap(mapPage)
         }
         console.log(resp);
         setLoad(false);
@@ -67,29 +76,32 @@ const GenerateMap = props => {
             if (properties[i].trim() === "longitude") {
                 longitude = i;
             }
-            //console.log(properties[i]);
+
         }
         let coords = [];
         for (let i = 1; i < listText.length && i < 1000; i++) {
             const values = listText[i].split(";");
-            //console.log(values);
             if (values[latitude] && values[longitude]) {
                 const obj = { lat: values[latitude], lng: values[longitude] }
-                //console.log(obj);
                 coords.push(obj);
             }
         }
-        setMarkers(coords);
+        let mapPage2 = { ...mapPage };
+        mapPage2.layers[0].latLng = coords;
+        setMapPage(mapPage2);
         setLoad(false);
     }
 
     useEffect(() => {
-        if (map.layers && map.layers.length && map.layers.length > 0) {
+        if (map.name) {
             console.log(map);
-            setMarkers(map.layers[0].latLng); //primeira camada de pontos
-            setMapName(map.name);
-            setDescription(map.description);
+            let mapPage2 = { ...mapPage };
+            mapPage2.layers = map.layers; 
+            mapPage2.name = map.name;
+            mapPage2.description = map.description;
+            mapPage2.id = map._id;
             setNewMap(false);
+            setMapPage(mapPage2);
         }
         return setMap({
             id: "",
@@ -99,7 +111,9 @@ const GenerateMap = props => {
     }, []);
 
     const _setDescription = (event) => {
-        setDescription(event.target.value);
+        let mapPage2 = { ...mapPage };
+        mapPage2.description = event.target.value;
+        setMapPage(mapPage2);
     }
 
     return (
@@ -107,14 +121,14 @@ const GenerateMap = props => {
             {load ?
                 <Loading />
                 :
-            <MapBar onClickBasicMap={modifyBasicMap} onClickSaveMap={saveMap} setMapName={setMapName} 
-                importMap={importMap} mapName={mapName} newMap={newMap}/>
+                <MapBar onClickBasicMap={modifyBasicMap} onClickSaveMap={saveMap} setMapPage={setMapPage}
+                    importMap={importMap} mapPage={mapPage} newMap={newMap} />
             }
             <div className={styles.body}>
                 <div className={styles.leftMenu}>
                     <div className={styles.wrapContent}>
-                        <textarea className={styles.description} placeholder="Descrição..." 
-                            onChange={_setDescription} value={description}/>
+                        <textarea className={styles.description} placeholder="Descrição..."
+                            onChange={_setDescription} value={mapPage.description} />
                     </div>
                 </div>
                 <div className={styles.mapArea}>
@@ -122,13 +136,12 @@ const GenerateMap = props => {
                         <TileLayer
                             url={basicMapsImages[indexBasicMap]}
                         />
-                        {/* <Marker position={position}>
-                     <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
-                </Marker> */}
-                        {markers.map((marker, index) => {
+                        {mapPage.layers[0].latLng.map((marker, index) => {
                             let pos = [marker.lat, marker.lng]
                             return (
-                                <Marker position={pos} key={index} />
+                                <Marker position={pos} key={index}>
+                                    <Popup>popup</Popup>
+                                </Marker>
                             )
                         })}
                     </Map>

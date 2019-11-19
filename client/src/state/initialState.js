@@ -5,7 +5,7 @@ export const initialState = () =>({
         isLogged: localStorage.getItem("token") ? true : false
     },
     map: {
-        id: "",
+        _id: "",
         name: "",
         layers: []
     }
