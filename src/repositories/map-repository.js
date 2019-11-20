@@ -32,6 +32,7 @@ exports.update = async(id, data) =>{
             name: data.name,
             description: data.description,
             baseMap: data.baseMap,
+            layers: data.layers,
             updated: new Date().toJSON().slice(0,10).replace(/-/g,'/')
         }
     })

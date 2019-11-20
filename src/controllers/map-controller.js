@@ -55,7 +55,8 @@ exports.put = async(req, res, next) => {
     await repository.update(req.params.id, 
         {   name : req.body.name,
             description: req.body.description,
-            baseMap: req.body.baseMap
+            baseMap: req.body.baseMap,
+            layers: req.body.layers
         })
 
     try{
