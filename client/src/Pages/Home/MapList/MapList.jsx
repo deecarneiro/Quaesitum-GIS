@@ -11,8 +11,9 @@ const MapList = (props) => {
         listMap.map((mapItem) => {
             const _setMap = async () => {
                 await setMap(mapItem);
+                sessionStorage.setItem("map", JSON.stringify(mapItem));
                 console.log(mapItem);
-                history.push("/generateMap");
+                history.push("/generateMap/map");
             }
             return (
                 <MapItem name={mapItem.name} img={mapItem.img} 

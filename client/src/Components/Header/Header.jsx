@@ -17,6 +17,7 @@ const Header = props => {
         await setLoad(true);
         localStorage.removeItem("token");
         localStorage.removeItem("id");
+        sessionStorage.removeItem("map");
         await setUserLogged(false);
         await setLoad(false);
         history.push("/login");
