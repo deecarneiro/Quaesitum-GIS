@@ -87,11 +87,15 @@ const GenerateMap = props => {
     }
 
     const importMap = event => {
-        if (event.target) {
-            const leitorCSV = new FileReader();
-            const file = event.target.files[0];
-            leitorCSV.readAsText(file);
-            leitorCSV.onload = lerCSV;
+        if(selectLayer.length === 1){
+            if (event.target) {
+                const leitorCSV = new FileReader();
+                const file = event.target.files[0];
+                leitorCSV.readAsText(file);
+                leitorCSV.onload = lerCSV;
+            }
+        }else{
+            alert("Para adicionar pontos você precisa especificar a camada");
         }
     }
 
@@ -118,13 +122,12 @@ const GenerateMap = props => {
             }
         }
         let mapPage2 = { ...mapPage };
-        mapPage2.layers[0].latLng = coords;
+        mapPage2.layers[layersSelected].latLng = coords;
         setMapPage(mapPage2);
         setLoad(false);
     }
 
     useEffect(() => {
-        console.log(map);
         if (withMap) {
             console.log(withMap);
             let mapPage2 = { ...mapPage };
@@ -150,7 +153,8 @@ const GenerateMap = props => {
                 :
                 <MapBar onClickBasicMap={modifyBasicMap} onClickSaveMap={saveMap}
                     setMapPage={setMapPage} importMap={importMap} mapPage={mapPage}
-                    newMap={newMap} addLayer={addLayer} selectLayer={selectLayer} />
+                    newMap={newMap} addLayer={addLayer} selectLayer={selectLayer} 
+                    layersSelected={layersSelected}/>
             }
             <div className={styles.body}>
                 <div className={styles.leftMenu}>

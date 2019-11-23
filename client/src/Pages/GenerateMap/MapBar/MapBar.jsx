@@ -22,7 +22,7 @@ import LayerList from '../LayerList/LayerList';
 const MenuBar = props => {
 
     const { onClickBasicMap, onClickSaveMap, setMapPage, importMap, 
-        mapPage, newMap, addLayer, selectLayer } = props;
+        mapPage, newMap, addLayer, selectLayer, layersSelected } = props;
     const save = newMap ? "Salvar mapa" : "Atualizar mapa";
 
     const _setMapName = event => {
@@ -41,7 +41,8 @@ const MenuBar = props => {
                 </DropDownButton>
 
                 <DropDownButton icon={addMapImg} title={"Camadas"}>
-                    <LayerList layers={mapPage.layers} addLayer={addLayer} selectLayer={selectLayer}/>
+                    <LayerList layers={mapPage.layers} addLayer={addLayer} selectLayer={selectLayer}
+                        layersSelected={layersSelected} />
                 </DropDownButton>
 
                 <IconButton icon={changingImg} title={"Mudar Mapa Base"} onClick={onClickBasicMap} />

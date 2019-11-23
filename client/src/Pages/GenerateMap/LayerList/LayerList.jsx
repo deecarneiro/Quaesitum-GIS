@@ -3,16 +3,18 @@ import styles from "./LayerList.module.scss";
 import LayerItem from "./LayerItem/LayerItem";
 
 const LayerList = props => {
-    const { layers, addLayer, selectLayer} = props
+    const { layers, addLayer, selectLayer, layersSelected } = props
 
     return (
         <div className={styles.listLayers}>
             {layers.map((layer, index) => {
                 const name = layer.name ? layer.name : `Camada ${index + 1}`;
-                const isFirst = index === 0 ? true : false;
+                console.log(layersSelected);
+                const selected = layersSelected.findIndex((layer) => layer === index) !== -1 ?
+                    true : false;
                 const _selectLayer = () => selectLayer(index);
                 return (
-                    <LayerItem name={name} onClick={_selectLayer} key={index} select={isFirst}/>
+                    <LayerItem name={name} onClick={_selectLayer} key={index} select={selected} />
                 )
             })}
             <p className={`${styles.layer} dropdown-item`} onClick={addLayer}>Adicionar camada <strong>+</strong></p>
