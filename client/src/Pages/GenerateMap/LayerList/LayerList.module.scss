@@ -1,0 +1,17 @@
+@import "../../../assets/css/variables.scss";
+
+.listLayers {
+  width: 100%;
+  .layer {
+    width: 100%;
+    margin-bottom: 5px;
+    &:hover {
+      background-color: $color-gray-light;
+      cursor: pointer;
+    }
+  }
+}
+
+.selectedLayer{
+  background-color: $color-blue-light !important;
+}

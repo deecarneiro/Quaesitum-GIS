@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import styles from "./GenerateMap.module.scss";
-import { withRouter } from "react-router-dom";
 import MapBar from "./MapBar/MapBar";
 import { mapService } from "../../Services";
 import { UserContext } from "../../App";
@@ -13,7 +12,8 @@ const basicMapsImages = [
     "https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
 ]
 
-const GenerateMap = () => {
+const GenerateMap = props => {
+    const { withMap } = props;
     const [indexBasicMap, setIndexBasicMap] = useState(0);
     const [mapPage, setMapPage] = useState({
         id: "",
@@ -27,40 +27,75 @@ const GenerateMap = () => {
     });
     const [newMap, setNewMap] = useState(true);
     const [load, setLoad] = useState(false);
-    const { user, map, setMap } = useContext(UserContext);
-
+    const [layersSelected, setLayersSelected] = useState([0]);
+    const { user, map } = useContext(UserContext);
     const modifyBasicMap = async () => {
         await setIndexBasicMap((indexBasicMap + 1) % basicMapsImages.length);
     }
 
     const addMarkers = async (event) => {
-        const lat = event.latlng.lat;
-        const lng = event.latlng.lng;
-        let mapPage2 = { ...mapPage };
-        mapPage2.layers[0].latLng.push({ lat: lat, lng: lng });
+        if (layersSelected.length === 1) {
+            const lat = event.latlng.lat;
+            const lng = event.latlng.lng;
+            let mapPage2 = { ...mapPage };
+            mapPage2.layers[layersSelected[0]].latLng.push({ lat: lat, lng: lng });
 
-        await setMapPage(mapPage2);
+            await setMapPage(mapPage2);
+        } else {
+            alert("Para adicionar pontos você precisa especificar a camada");
+        }
+    }
+
+    const addLayer = () => {
+        let mapPage2 = { ...mapPage };
+        mapPage2.layers.push({
+            name: "",
+            latLng: []
+        })
+        setMapPage(mapPage2);
+    }
+
+    const selectLayer = (layerClick) => {
+        const index = layersSelected.findIndex((layer) => layer === layerClick);
+        let newLayers = [...layersSelected];
+        if (index === -1) {
+            newLayers.push(layerClick);
+            setLayersSelected(newLayers);
+            return true;
+        } else {
+            if (layersSelected.length > 1) {
+                newLayers.splice(index, 1);
+                setLayersSelected(newLayers);
+                return true;
+            } else {
+                alert("É necessário ter ao menos uma camada selecionada");
+                return false;
+            }
+        }
     }
 
     const saveMap = async () => {
         setLoad(true);
-        console.log(mapPage);
         let resp;
         if (newMap) {
             resp = await mapService.saveMap(user.id, mapPage);
         } else {
             resp = await mapService.updateMap(mapPage)
         }
-        console.log(resp);
+        sessionStorage.setItem("map", JSON.stringify(mapPage));
         setLoad(false);
     }
 
     const importMap = event => {
-        if (event.target) {
-            const leitorCSV = new FileReader();
-            const file = event.target.files[0];
-            leitorCSV.readAsText(file);
-            leitorCSV.onload = lerCSV;
+        if(selectLayer.length === 1){
+            if (event.target) {
+                const leitorCSV = new FileReader();
+                const file = event.target.files[0];
+                leitorCSV.readAsText(file);
+                leitorCSV.onload = lerCSV;
+            }
+        }else{
+            alert("Para adicionar pontos você precisa especificar a camada");
         }
     }
 
@@ -87,27 +122,22 @@ const GenerateMap = () => {
             }
         }
         let mapPage2 = { ...mapPage };
-        mapPage2.layers[0].latLng = coords;
+        mapPage2.layers[layersSelected].latLng = coords;
         setMapPage(mapPage2);
         setLoad(false);
     }
 
     useEffect(() => {
-        if (map.name) {
-            console.log(map);
+        if (withMap) {
+            console.log(withMap);
             let mapPage2 = { ...mapPage };
-            mapPage2.layers = map.layers; 
+            mapPage2.layers = map.layers;
             mapPage2.name = map.name;
             mapPage2.description = map.description;
             mapPage2.id = map._id;
             setNewMap(false);
             setMapPage(mapPage2);
         }
-        return setMap({
-            id: "",
-            name: "",
-            layers: []
-        });
     }, []);
 
     const _setDescription = (event) => {
@@ -121,8 +151,10 @@ const GenerateMap = () => {
             {load ?
                 <Loading />
                 :
-                <MapBar onClickBasicMap={modifyBasicMap} onClickSaveMap={saveMap} setMapPage={setMapPage}
-                    importMap={importMap} mapPage={mapPage} newMap={newMap} />
+                <MapBar onClickBasicMap={modifyBasicMap} onClickSaveMap={saveMap}
+                    setMapPage={setMapPage} importMap={importMap} mapPage={mapPage}
+                    newMap={newMap} addLayer={addLayer} selectLayer={selectLayer} 
+                    layersSelected={layersSelected}/>
             }
             <div className={styles.body}>
                 <div className={styles.leftMenu}>
@@ -136,12 +168,16 @@ const GenerateMap = () => {
                         <TileLayer
                             url={basicMapsImages[indexBasicMap]}
                         />
-                        {mapPage.layers[0].latLng.map((marker, index) => {
-                            let pos = [marker.lat, marker.lng]
+                        {layersSelected.map((layerSelected) => {
                             return (
-                                <Marker position={pos} key={index}>
-                                    <Popup>popup</Popup>
-                                </Marker>
+                                mapPage.layers[layerSelected].latLng.map((marker, index) => {
+                                    let pos = [marker.lat, marker.lng]
+                                    return (
+                                        <Marker position={pos} key={index}>
+                                            <Popup>popup</Popup>
+                                        </Marker>
+                                    )
+                                })
                             )
                         })}
                     </Map>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import styles from "./Home.module.scss";
 import MapList from "./MapList/MapList";
-import ConstantList from "./ConstantList";
 import Loading from "../../Components/Loading/Loading";
 import { userService } from "../../Services";
 import { UserContext } from "../../App";
@@ -14,7 +13,6 @@ const Home = () => {
     useEffect(() => {
         setLoad(true);
         userService.getMaps(user.id).then((maps) => {
-            console.log(maps.data);
             setList(maps.data);
             setLoad(false);
         }).catch((error) => {
@@ -25,7 +23,7 @@ const Home = () => {
 
     const contentMap = (list.length !== 0) ? <MapList listMap={list} /> :
         <p className={styles.message}>Nenhum mapa salvo!</p>;
-
+    console.log(user);
     return (
         <>
             <div className={styles.titleArea}>

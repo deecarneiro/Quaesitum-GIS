@@ -16,12 +16,13 @@ import styles from "./MapBar.module.scss";
 //Components
 import DropDownButton from '../../../Components/DropDownButton/DropDownButton';
 import IconButton from '../../../Components/IconButton/IconButton';
-import ExpansiveMenu from "../../../Components/ExpansiveMenu/ExpansiveMenu";
 import ImportFile from '../../../Components/ImportFile/ImportFile';
+import LayerList from '../LayerList/LayerList';
 
 const MenuBar = props => {
 
-    const { onClickBasicMap, onClickSaveMap, setMapPage, importMap, mapPage, newMap } = props;
+    const { onClickBasicMap, onClickSaveMap, setMapPage, importMap, 
+        mapPage, newMap, addLayer, selectLayer, layersSelected } = props;
     const save = newMap ? "Salvar mapa" : "Atualizar mapa";
 
     const _setMapName = event => {
@@ -39,8 +40,9 @@ const MenuBar = props => {
                     <IconButton icon={LegendsImg} title={"Legendas"}></IconButton>
                 </DropDownButton>
 
-                <DropDownButton icon={addMapImg} title={"Adicionar"}>
-                    <a className="dropdown-item bg-white">Teste 01</a>
+                <DropDownButton icon={addMapImg} title={"Camadas"}>
+                    <LayerList layers={mapPage.layers} addLayer={addLayer} selectLayer={selectLayer}
+                        layersSelected={layersSelected} />
                 </DropDownButton>
 
                 <IconButton icon={changingImg} title={"Mudar Mapa Base"} onClick={onClickBasicMap} />

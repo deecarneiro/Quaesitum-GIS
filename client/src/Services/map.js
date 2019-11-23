@@ -25,6 +25,10 @@ const map = {
         }
         console.log(data);
         return axios.put(url, data);
+    },
+    getById: (id) => {
+        const url = API + "/"+ id;
+        return axios.get(url);
     }
 }
 export default map;
