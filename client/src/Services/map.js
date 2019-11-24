@@ -12,7 +12,6 @@ const map = {
             baseMap: map.baseMap,
             layers: map.layers
         }
-        console.log(data);
         return axios.post(url, data);
     },
     updateMap: (map) => {
@@ -23,7 +22,6 @@ const map = {
             baseMap: map.baseMap,
             layers: map.layers
         }
-        console.log(data);
         return axios.put(url, data);
     },
     getById: (id) => {

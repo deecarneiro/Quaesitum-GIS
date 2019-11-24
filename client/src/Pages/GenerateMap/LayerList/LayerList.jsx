@@ -9,7 +9,6 @@ const LayerList = props => {
         <div className={styles.listLayers}>
             {layers.map((layer, index) => {
                 const name = layer.name ? layer.name : `Camada ${index + 1}`;
-                console.log(layersSelected);
                 const selected = layersSelected.findIndex((layer) => layer === index) !== -1 ?
                     true : false;
                 const _selectLayer = () => selectLayer(index);

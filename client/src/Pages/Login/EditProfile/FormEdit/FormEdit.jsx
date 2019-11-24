@@ -27,15 +27,14 @@ const FormEdit = props => {
 
         userService.updateUser(user.id, data.name, data.email, data.password).then((resp) => {
             if (resp.status === 200) {
-                console.log(resp);
                 alert(resp.data.message);
+                window.location.reload();
             } else {
-                console.log(resp);
                 alert(resp.data.message);
             }
             setLoad(false);
         }).catch((error) => {
-            console.log(error);
+            alert("Algo deu errado");
             setLoad(false);
         })
     }
