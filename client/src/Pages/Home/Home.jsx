@@ -16,14 +16,13 @@ const Home = () => {
             setList(maps.data);
             setLoad(false);
         }).catch((error) => {
-            console.log(error);
+            alert("Algo deu errado");
             setLoad(false);
         });
     }, []);
 
     const contentMap = (list.length !== 0) ? <MapList listMap={list} /> :
         <p className={styles.message}>Nenhum mapa salvo!</p>;
-    console.log(user);
     return (
         <>
             <div className={styles.titleArea}>

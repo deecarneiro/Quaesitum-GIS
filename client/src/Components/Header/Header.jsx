@@ -28,7 +28,11 @@ const Header = props => {
         userService.getUser(id).then((resp) => {
             setUserName(resp.data.name);
         }).catch((error) => {
-            console.log(error);
+            if (error.response && error.response.data) {
+                alert(error.response.data.message);
+            } else {
+                alert("Algo deu errado");
+            }
         })
     }, [])
 

@@ -16,7 +16,11 @@ const saveUser = async (user, setLoad, history) => {
         setLoad(false);
         history.push("/login");
     } catch (error) {
-        console.log(error.response.data);
+        if( error.response && error.response.data){
+            alert(error.response.data.message);
+        }else{
+            alert("Algo deu errado");
+        }
         setLoad(false);
     }
 }

@@ -39,11 +39,15 @@ const FormAutentication = props => {
                         }
                         setLoad(false);
                     }).catch((error) => {
-                        console.log(error);
+                        if(error.response && error.response.data){
+                            alert(error.response.data.message);
+                        }else{
+                            alert("Algo deu errado");
+                        }
                         setLoad(false);
                     })
             }).catch((error) => {
-                console.log(error);
+                alert("Algo deu errado");
                 setLoad(false);
             })
     }

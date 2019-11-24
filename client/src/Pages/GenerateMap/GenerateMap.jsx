@@ -76,25 +76,28 @@ const GenerateMap = props => {
 
     const saveMap = async () => {
         setLoad(true);
-        let resp;
-        if (newMap) {
-            resp = await mapService.saveMap(user.id, mapPage);
-        } else {
-            resp = await mapService.updateMap(mapPage)
+        try {
+            if (newMap) {
+                await mapService.saveMap(user.id, mapPage);
+            } else {
+                await mapService.updateMap(mapPage)
+            }
+            sessionStorage.setItem("map", JSON.stringify(mapPage));
+        } catch (error) {
+            alert("Algo deu errado");
         }
-        sessionStorage.setItem("map", JSON.stringify(mapPage));
         setLoad(false);
     }
 
     const importMap = event => {
-        if(selectLayer.length === 1){
+        if (layersSelected.length === 1) {
             if (event.target) {
                 const leitorCSV = new FileReader();
                 const file = event.target.files[0];
                 leitorCSV.readAsText(file);
                 leitorCSV.onload = lerCSV;
             }
-        }else{
+        } else {
             alert("Para adicionar pontos você precisa especificar a camada");
         }
     }
@@ -113,23 +116,28 @@ const GenerateMap = props => {
             }
 
         }
-        let coords = [];
-        for (let i = 1; i < listText.length && i < 1000; i++) {
-            const values = listText[i].split(";");
-            if (values[latitude] && values[longitude]) {
-                const obj = { lat: values[latitude], lng: values[longitude] }
-                coords.push(obj);
+        try {
+            let coords = [];
+            for (let i = 1; i < listText.length && i < 1000; i++) {
+                const values = listText[i].split(";");
+                if (values[latitude] && values[longitude]) {
+                    const obj = { lat: values[latitude], lng: values[longitude] }
+                    coords.push(obj);
+                }
             }
+            const newCoords = [...coords, ...mapPage.layers[layersSelected].latLng];
+            let mapPage2 = { ...mapPage };
+            mapPage2.layers[layersSelected].latLng = newCoords;
+            setMapPage(mapPage2);
+        } catch (error) {
+            alert("Algo deu errado");
+            window.location.reload();
         }
-        let mapPage2 = { ...mapPage };
-        mapPage2.layers[layersSelected].latLng = coords;
-        setMapPage(mapPage2);
         setLoad(false);
     }
 
     useEffect(() => {
         if (withMap) {
-            console.log(withMap);
             let mapPage2 = { ...mapPage };
             mapPage2.layers = map.layers;
             mapPage2.name = map.name;
@@ -153,8 +161,8 @@ const GenerateMap = props => {
                 :
                 <MapBar onClickBasicMap={modifyBasicMap} onClickSaveMap={saveMap}
                     setMapPage={setMapPage} importMap={importMap} mapPage={mapPage}
-                    newMap={newMap} addLayer={addLayer} selectLayer={selectLayer} 
-                    layersSelected={layersSelected}/>
+                    newMap={newMap} addLayer={addLayer} selectLayer={selectLayer}
+                    layersSelected={layersSelected} />
             }
             <div className={styles.body}>
                 <div className={styles.leftMenu}>

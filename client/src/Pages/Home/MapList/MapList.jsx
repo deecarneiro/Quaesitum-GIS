@@ -8,16 +8,15 @@ const MapList = (props) => {
     const { setMap } = useContext(UserContext); 
 
     return (
-        listMap.map((mapItem) => {
+        listMap.map((mapItem, index) => {
             const _setMap = async () => {
                 await setMap(mapItem);
                 sessionStorage.setItem("map", JSON.stringify(mapItem));
-                console.log(mapItem);
                 history.push("/generateMap/map");
             }
             return (
                 <MapItem name={mapItem.name} img={mapItem.img} 
-                setMap={_setMap} key={mapItem.id}/>
+                setMap={_setMap} index={index}/>
             )
         })
     )

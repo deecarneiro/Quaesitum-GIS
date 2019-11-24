@@ -27,7 +27,6 @@ const loadUser = async (user, setUserLogged, setUserId, setUserName, setLoad, hi
     setLoad(true);
     try {
         const response = await userService.loadUser(user.email, user.password);
-        console.log(response);
         if (response.status === 201) {
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("id", response.data.data.id);
@@ -38,7 +37,11 @@ const loadUser = async (user, setUserLogged, setUserId, setUserName, setLoad, hi
             history.push("/home");
         }
     } catch (error) {
-        console.log(error);
+        if(error.response && error.response.data){
+            alert(error.response.data.message);
+        }else{
+            alert("Algo deu errado");
+        }
         setLoad(false);
     }
 };

@@ -3,10 +3,10 @@ import styles from "./MapItem.module.scss";
 import imageDefault from "../../../../assets/images/ImgRecife.jpg";
 
 const MapItem = (props) => {
-    const { name, img = imageDefault, setMap, key} = props;
+    const { name, img = imageDefault, setMap, index} = props;
 
     return (
-        <div className={`card ${styles.map}`} onClick={setMap} key={key}>
+        <div className={`card ${styles.map}`} onClick={setMap} key={index}>
             <a className={styles.mapBody}>
                 <img src={img} className="card-img-top" alt="_MapImg" />
                 <div className="card-body">
