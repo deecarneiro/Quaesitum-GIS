@@ -1,35 +1,50 @@
 @import "../../../../assets/css/variables.scss";
 
-.map{
-    height: 250px;
-    width: 300px;
-    margin: 10px;
-    &:hover{
-        height: 320px;
+.flipCard {
+  perspective: 1000px;
+  width: 300px;
+  height: 250px;
+  margin: 10px;
+  .cardInner {
+    position: relative;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    width: 100%;
+    height: 100%;
+    &:hover {
+      cursor: pointer;
+      background-color: $color-gray-light;
+      box-shadow: 3px 3px 10px rgba(100, 100, 100, 0.3);
     }
-    .mapBody{
+    .cardFront,
+    .cardBack {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      backface-visibility: hidden;
+      img {
         width: 100%;
-        height: 100vh;
-        &:hover{
-            cursor: pointer;
-            background-color: $color-gray-light;
-            box-shadow: 3px 3px 10px rgba(100, 100, 100, 0.3);
-        }
-        img{
-            height: 180px;
-            width: 100%;
-        }
-        h5{
-            color: $color-gray-dark;
-            margin: 0;
-        }
-        .none{
-            display: none;
-        }
-        .block{
-            overflow: auto;
-            display: block;
-            max-height: 60px;
-        }
+        height: 150px;
+      }
     }
+    .cardBack {
+      transform: rotateY(180deg);
+    }
+    h5 {
+      color: $color-gray-dark;
+      margin: 0;
+    }
+  }
+}
+
+.content {
+  overflow: auto;
+  max-height: 200px;
+}
+
+.flipCard:hover .cardInner {
+  transform: rotateY(180deg);
+  .cardFront {
+    display: none;
+  }
 }
