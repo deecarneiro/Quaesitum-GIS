@@ -15,7 +15,7 @@ const MapList = (props) => {
                 history.push("/generateMap/map");
             }
             return (
-                <MapItem name={mapItem.name} img={mapItem.img} 
+                <MapItem map={mapItem} 
                 setMap={_setMap} index={index}/>
             )
         })

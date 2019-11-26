@@ -25,15 +25,17 @@ const Header = props => {
 
     useEffect(() => {
         let id = localStorage.getItem("id");
-        userService.getUser(id).then((resp) => {
-            setUserName(resp.data.name);
-        }).catch((error) => {
-            if (error.response && error.response.data) {
-                alert(error.response.data.message);
-            } else {
-                alert("Algo deu errado");
-            }
-        })
+        if(id){
+            userService.getUser(id).then((resp) => {
+                setUserName(resp.data.name);
+            }).catch((error) => {
+                if(error.responde && error.response.data){
+                    alert(error.response.data.message);
+                }else{
+                    alert("Algo deu errado");
+                }
+            })
+        }
     }, [])
 
     return (
